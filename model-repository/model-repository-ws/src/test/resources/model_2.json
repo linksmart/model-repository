@@ -1,0 +1,17 @@
+{
+  "name": "e3-t1",
+  "version": "456",
+  "model": [{
+  "ls_id": "id",
+  "ls_name": "e3-t1 domain model",
+  "ls_stereotype": "Device",
+  "ls_attributes": {
+        "description": "string",
+        "meta": {},
+        "ttl": "number"
+    },
+  "domain_class": "string",
+  "domain_attributes": {},
+  "children": []
+  }]
+}

@@ -1,0 +1,22 @@
+README 	
+
+General information
+	E3 - Shop Floor Data Aggregation Middleware Connector (DMC)
+
+AUTHORS 	Hassan Rasheed
+
+ChangeLog
+
+NEWS
+
+INSTALL
+  	Install a 1.6 JDK. 
+  	
+Depending on OS either call "start.sh" or "start.bat" to start the client.
+
+start the client with given monitoring sleep time
+start.sh 10000    
+
+COPYING / LICENSE 	see LICENSE for details
+
+BUGS

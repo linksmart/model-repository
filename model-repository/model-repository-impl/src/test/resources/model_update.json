@@ -1,0 +1,17 @@
+{
+  "name": "e3",
+  "version": "123",
+  "model": [{
+  "ls_id": "id_update",
+  "ls_name": "e3 domain model updated",
+  "ls_stereotype": "Device",
+  "ls_attributes": {
+        "description": "string",
+        "meta": {},
+        "ttl": "number"
+    },
+  "domain_class": "string",
+  "domain_attributes": {},
+  "children": []
+  }]
+}

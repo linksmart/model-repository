@@ -1,0 +1,81 @@
+{
+   "model": [{
+      "domain_class": "Class_1",
+      "ls_stereotype": "Device",
+      "ls_id": "ls01",
+      "ls_attributes": {
+         "description": "description for instance 1",
+         "ttl": 30,
+         "meta": {
+            "name1": "value1",
+            "name2": "value2"
+         }
+      },
+      "children": [
+         {
+            "domain_class": "Class_2",
+            "ls_stereotype": "Resource",
+            "ls_id": "ls003",
+            "ls_attributes": {
+               "protocol": {
+                  "methods": ["PUB"],
+                  "content_types": ["text/plain"],
+                  "type": "MQTT",
+                  "endpoint": {
+                     "topic": "/my-demo-gateway-1/DummyDevice/RandomStream",
+                     "url": "tcp://mqttbroker:1883"
+                  }
+               },
+               "representation": {"text/plain": {"type": "number"}},
+               "meta": {
+                  " rs3": "val3",
+                  "rs4": "val4"
+               }
+            },
+            "children": [],
+            "ls_name": "resource 2",
+            "domain_attributes": {
+               "id": "52",
+               "Y": "250",
+               "X": "120"
+            }
+         },
+         {
+            "domain_class": "Class_2",
+            "ls_stereotype": "Resource",
+            "ls_id": "ls002",
+            "ls_attributes": {
+               "protocol": {
+                  "methods": ["PUB"],
+                  "content_types": ["text/plain"],
+                  "type": "MQTT",
+                  "endpoint": {
+                     "topic": "/my-demo-gateway-1/DummyDevice/RandomStream",
+                     "url": "tcp://mqttbroker:1883"
+                  }
+               },
+               "representation": {"text/plain": {"type": "number"}},
+               "meta": {
+                  "rs2": "val2",
+                  "rs1": "val1"
+               }
+            },
+            "children": [],
+            "ls_name": "resource 1",
+            "domain_attributes": {
+               "id": "51",
+               "Y": "250",
+               "X": "120"
+            }
+         }
+      ],
+      "ls_name": "device 1",
+      "domain_attributes": {
+         "id": "d001",
+         "domain_attr1": "domain_attr1_value",
+         "domain_attr2": "domain_attr2_value"
+      }
+   }],
+   "name": "simple_test",
+   "version": "56"
+}

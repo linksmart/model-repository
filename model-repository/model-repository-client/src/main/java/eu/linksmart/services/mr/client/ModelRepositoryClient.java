@@ -1,6 +1,7 @@
 package eu.linksmart.services.mr.client;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.ws.rs.core.MultivaluedMap;
@@ -109,34 +110,8 @@ public class ModelRepositoryClient {
 			
             ArrayList<String> list = new ArrayList<String>();
             
-            for (int i = 0; i <= entries.size(); i++) {
+            for (int i = 0; i < entries.size(); i++) {
 				String model = entries.get("json").get(i);
-				list.add(model);
-			}
-			
-    		return list;
-    		
-        } catch (Exception e) {
-			LOG.error(e);
-			return null;
-		}	
-    }
-    
-    public static List<String> listXmiModels() {
-    	
-    	try {
-    	
-    		Client client = Client.create();
-            WebResource webResourceClient = client.resource(BASE_URL + "/" + "list/xmi");
-            
-            ClientResponse response = webResourceClient.type("text/plain; charset=utf-8").accept("application/x-www-form-urlencoded; charset=utf-8").get(ClientResponse.class);
-    		
-            MultivaluedMap<String, String> entries = response.getEntity(MultivaluedMap.class);
-			
-            ArrayList<String> list = new ArrayList<String>();
-            
-            for (int i = 0; i <= entries.size(); i++) {
-				String model = entries.get("xmi").get(i);
 				list.add(model);
 			}
 			
@@ -158,7 +133,7 @@ public class ModelRepositoryClient {
     		Client client = Client.create();
             WebResource webResourceClient = client.resource(BASE_URL + "/xmi/" + modelIdentifier);
 
-            String outcome = webResourceClient.type("application/json; charset=utf-8").accept("text/plain; charset=utf-8").post(String.class, xmiModelDoc);
+            String outcome = webResourceClient.type("application/xml; charset=utf-8").accept("text/plain; charset=utf-8").post(String.class, xmiModelDoc);
             
             return outcome;
             
@@ -175,7 +150,7 @@ public class ModelRepositoryClient {
     		Client client = Client.create();
             WebResource webResourceClient = client.resource(modelURI);
 
-            String outcome = webResourceClient.type("text/plain; charset=utf-8").accept("application/json; charset=utf-8").get(String.class);
+            String outcome = webResourceClient.type("text/plain; charset=utf-8").accept("application/xml; charset=utf-8").get(String.class);
             
             return outcome;
             
@@ -192,7 +167,7 @@ public class ModelRepositoryClient {
     		Client client = Client.create();
             WebResource webResourceClient = client.resource(modelURI);
 
-            String outcome = webResourceClient.type("application/json; charset=utf-8").accept("text/plain; charset=utf-8").put(String.class, xmiModelDoc);
+            String outcome = webResourceClient.type("application/xml; charset=utf-8").accept("text/plain; charset=utf-8").put(String.class, xmiModelDoc);
             
             return outcome;
             
@@ -213,6 +188,32 @@ public class ModelRepositoryClient {
             
             return outcome;
             
+        } catch (Exception e) {
+			LOG.error(e);
+			return null;
+		}	
+    }
+    
+    public static List<String> listXmiModels() {
+    	
+    	try {
+    	
+    		Client client = Client.create();
+            WebResource webResourceClient = client.resource(BASE_URL + "/" + "list/xmi");
+            
+            ClientResponse response = webResourceClient.type("text/plain; charset=utf-8").accept("application/x-www-form-urlencoded; charset=utf-8").get(ClientResponse.class);
+    		
+            MultivaluedMap<String, String> entries = response.getEntity(MultivaluedMap.class);
+			
+            ArrayList<String> list = new ArrayList<String>();
+            
+            for (int i = 0; i < entries.size(); i++) {
+				String model = entries.get("xmi").get(i);
+				list.add(model);
+			}
+            
+    		return list;
+    		
         } catch (Exception e) {
 			LOG.error(e);
 			return null;

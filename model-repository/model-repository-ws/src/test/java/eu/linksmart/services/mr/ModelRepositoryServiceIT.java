@@ -26,7 +26,7 @@ public class ModelRepositoryServiceIT extends TestCase {
     protected void setUp() {
         if(LOG.isDebugEnabled()) {
         	LOG.debug("================================================================================");
-        	LOG.debug("Entering unit test: " + this.getName());
+        	LOG.debug("Entering integration test: " + this.getName());
         	LOG.debug("--------------------------------------------------------------------------------");
         }
         
@@ -37,7 +37,7 @@ public class ModelRepositoryServiceIT extends TestCase {
     protected void tearDown() {
         if(LOG.isDebugEnabled()) {
         	LOG.debug("--------------------------------------------------------------------------------");
-        	LOG.debug("Leaving unit test: " + this.getName());
+        	LOG.debug("Leaving integration test: " + this.getName());
         	LOG.debug("================================================================================");
         }
     }
@@ -73,7 +73,7 @@ public class ModelRepositoryServiceIT extends TestCase {
             
         } catch (Exception e) {
         	LOG.error(e);
-        	fail("testAdd failed: " + e.getMessage());
+        	fail("testJson failed: " + e.getMessage());
 		}
     }
     
@@ -105,84 +105,10 @@ public class ModelRepositoryServiceIT extends TestCase {
         	String status2 = ModelRepositoryClient.delete(modelURI2);
         	assertNotNull(status2);
         	
-        	
-        	List<String> listXmi = ModelRepositoryClient.listXmiModels();
-        	assertNotNull(listXmi);
-        	System.out.println("listXmi: " + listXmi.size());
-            
         } catch (Exception e) {
         	LOG.error(e);
-        	fail("test failed: " + e.getMessage());
+        	fail("testJsonList failed: " + e.getMessage());
 		}
     }
     
-    public void testXmi() throws Exception {	
-    }
-    
-    public void testXmiList() throws Exception {
-    	try {
-    		
-        	//List<String> listXmi = ModelRepositoryClient.listXmiModels();
-        	//assertNotNull(listXmi);
-        	//System.out.println("listXmi: " + listXmi.size());
-            
-        } catch (Exception e) {
-        	LOG.error(e);
-        	fail("test failed: " + e.getMessage());
-		}
-    }
-    
-//    public void testAdd() throws Exception {
-//        try {
-//        	ModelRepositoryClient.initialize(URL);
-//        	String modelString = getModel();
-//        	assertNotNull(ModelRepositoryClient.add(modelString));
-//            LOG.info("add is successful");
-//        } catch (Exception e) {
-//        	LOG.error(e);
-//        	fail("testAdd failed: " + e.getMessage());
-//		}
-//    }
-//    
-//   public void testGet() throws Exception {
-//        try {
-//        	ModelRepositoryClient.initialize(URL);
-//        	String outcome = ModelRepositoryClient.get("e3.123");
-//        	assertNotNull(outcome);
-//        	LOG.info("get is successful");
-//        } catch (Exception e) {
-//        	LOG.error(e);
-//        	fail("testGet failed: " + e.getMessage());
-//		}
-//    }
-//    
-//   public void testUpdate() throws Exception {
-//        try {
-//        } catch (Exception e) {
-//        	LOG.error(e);
-//        	fail("testUpdate failed: " + e.getMessage());
-//		}
-//   }
-//   
-//   public void testRemove() throws Exception {
-//       try {
-//       } catch (Exception e) {
-//       	LOG.error(e);
-//       	fail("testRemoveManifest failed: " + e.getMessage());
-//		}
-//   }
-//   
-//   public void testGetAllResourcesOfType() throws Exception {
-//       try {   
-//       } catch (Exception e) {
-//       	LOG.error(e);
-//       	fail("testGetAllResourcesOfType failed: " + e.getMessage());
-//       }
-//   }
-   
-   private String getModel() throws Exception {
-	   byte[] encoded = Files.readAllBytes(Paths.get(getClass().getResource("/model.json").toURI()));
-	   return new String(encoded, Charset.defaultCharset());
-   }
-
 }

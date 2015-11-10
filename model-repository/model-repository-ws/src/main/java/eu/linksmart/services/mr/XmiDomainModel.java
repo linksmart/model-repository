@@ -64,11 +64,11 @@ public class XmiDomainModel {
 	}
 	
 	@PUT
-	@Consumes(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response update(@PathParam("modelIdentifier") String modelIdentifier, String xmiModelDoc, @Context UriInfo uriInfo) {
 		try {
-			ModelRepository.getInstance().updateModel(modelIdentifier, xmiModelDoc);
+			ModelRepository.getInstance().updateXmiModel(modelIdentifier, xmiModelDoc);
 			URI modelUri = uriInfo.getAbsolutePathBuilder().build();
 			return Response.status(Response.Status.OK).entity(modelUri.toString()).build();
 		} catch (Exception e) {

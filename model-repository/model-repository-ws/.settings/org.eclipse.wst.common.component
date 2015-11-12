@@ -7,6 +7,9 @@
         <dependent-module archiveName="model-repository-impl-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/model-repository-impl/model-repository-impl">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="model-repository-type-converter-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/model-repository-type-converter/model-repository-type-converter">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="model-repository-client-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/model-repository-client/model-repository-client">
             <dependency-type>uses</dependency-type>
         </dependent-module>

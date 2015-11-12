@@ -15,6 +15,7 @@
         <module>model-repository-types</module>
         <module>model-repository-ws</module>
 	   	<module>model-repository-client</module>
+	   	<module>model-repository-type-converter</module>
         <module>model-repository-distribution</module>
     </modules>
 
@@ -100,6 +101,11 @@
         		<artifactId>model-repository-impl</artifactId>
         		<version>${linksmart.mr.version}</version>
       		</dependency>
+      		<dependency>
+    			<groupId>eu.linksmart.services.mr</groupId>
+    			<artifactId>model-repository-type-converter</artifactId>
+    			<version>${linksmart.mr.version}</version>
+			</dependency>
       		<dependency>
         		<groupId>eu.linksmart.services.mr</groupId>
         		<artifactId>model-repository-types</artifactId>

@@ -20,6 +20,10 @@
     		<groupId>com.google.code.gson</groupId>
     		<artifactId>gson</artifactId>
 		</dependency>
+		<dependency>
+    		<groupId>eu.linksmart.services.mr</groupId>
+    		<artifactId>model-repository-type-converter</artifactId>
+		</dependency>
         <!-- JPA, EclipseLink -->
         <dependency>
             <artifactId>xercesImpl</artifactId>

@@ -32,22 +32,22 @@
         <surefire-report.version>2.17</surefire-report.version>
         <junit.version>4.8.2</junit.version>
         <maven.failsafe.version>2.16</maven.failsafe.version>
-        <!-- versions for logging -->
-        <log4j.version>1.2.16</log4j.version>
-        <slf4j.version>1.7.7</slf4j.version>
-        <!-- apache dependencies (misc) -->
-        <apache.httpclient.version>3.1_7</apache.httpclient.version>
-        <commons-codec.version>1.3_2</commons-codec.version>
-        <commons-configuration.version>1.9</commons-configuration.version>
-        <!-- apache cxf dependencies>-->
-        <cxf.version>2.7.9</cxf.version>
         <!-- distribution related plugins -->
         <maven.assembly.version>2.4.1</maven.assembly.version>
         <maven.antrun.version>1.7</maven.antrun.version>
         <maven.dependency.version>2.9</maven.dependency.version>
         <!-- other -->
-		<org.json.version>1.0.0</org.json.version>
         <javadoc-plugin.version>2.9</javadoc-plugin.version>
+        <!-- versions for logging -->
+        <log4j.version>1.2.16</log4j.version>
+        <slf4j.version>1.7.7</slf4j.version>
+        <!-- web related dependencies -->
+        <apache.httpclient.version>3.1_7</apache.httpclient.version>
+        <commons-codec.version>1.3_2</commons-codec.version>
+        <commons-configuration.version>1.6</commons-configuration.version>
+        <jersy.version>1.19</jersy.version>
+        <org.gson.version>2.4</org.gson.version>
+        
     </properties>
 
 	<distributionManagement>
@@ -122,42 +122,68 @@
 				<artifactId>httpclient</artifactId>
 				<version>4.5.1</version>
 			</dependency>
-			<dependency>
-            	<groupId>org.json</groupId>
-            	<artifactId>json</artifactId>
-				<version>20150729</version>
-        	</dependency>
         	<dependency>
     			<groupId>com.google.code.gson</groupId>
     			<artifactId>gson</artifactId>
-    			<version>2.4</version>
+    			<version>${org.gson.version}</version>
 			</dependency>
         	<dependency>
             	<groupId>com.sun.jersey</groupId>
             	<artifactId>jersey-server</artifactId>
-            	<version>1.19</version>
+            	<version>${jersy.version}</version>
         	</dependency>
 
         	<dependency>
             	<groupId>com.sun.jersey</groupId>
             	<artifactId>jersey-client</artifactId>
-            	<version>1.19</version>
+            	<version>${jersy.version}</version>
         	</dependency>
 			<dependency>
 				<groupId>com.sun.jersey</groupId>
 				<artifactId>jersey-core</artifactId>
-				<version>1.19</version>
+				<version>${jersy.version}</version>
 			</dependency>
     		<dependency>
 				<groupId>com.sun.jersey</groupId>
 				<artifactId>jersey-bundle</artifactId>
-				<version>1.19</version>
+				<version>${jersy.version}</version>
 			</dependency>
+        	<!-- Persistence, EclipseLink -->
         	<dependency>
-            	<groupId>com.sun.grizzly</groupId>
-            	<artifactId>grizzly-servlet-webserver</artifactId>
-            	<version>1.9.64</version>
+            	<artifactId>xercesImpl</artifactId>
+		    	<groupId>xerces</groupId>
+		    	<version>2.8.1</version>
         	</dependency>
+        	<dependency>
+				<groupId>hsqldb</groupId>
+				<artifactId>hsqldb</artifactId>
+				<version>1.8.0.10</version>
+			</dependency>
+			<dependency>
+				<groupId>postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>9.0-801.jdbc4</version>
+			</dependency>
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>5.1.8</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.persistence</groupId>
+				<artifactId>javax.persistence</artifactId>
+				<version>2.0.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.persistence</groupId>
+				<artifactId>eclipselink</artifactId>
+				<version>2.6.1</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-configuration</groupId>
+				<artifactId>commons-configuration</artifactId>
+				<version>${commons-configuration.version}</version>
+			</dependency>
         </dependencies>
     </dependencyManagement>
     

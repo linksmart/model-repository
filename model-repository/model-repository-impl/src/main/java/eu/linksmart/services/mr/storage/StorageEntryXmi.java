@@ -7,14 +7,14 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- *
- * @author hrasheed
- */
+*
+* @author hrasheed
+*/
 @Entity
-@Table(name="ENTRYSJSON")
-public class DBStorageEntry {
+@Table(name="ENTRYSXMI")
+public class StorageEntryXmi {
 
-    @Id
+	@Id
     @Column(name="ID", nullable=false, unique=true, updatable=false)
     @Basic(optional=false)
     private String key;
@@ -23,10 +23,10 @@ public class DBStorageEntry {
     @Basic(optional=false)
     private String value;
 
-    public DBStorageEntry() {
+    public StorageEntryXmi() {
     }
 
-    public DBStorageEntry(String key, String xmlText) {
+    public StorageEntryXmi(String key, String xmlText) {
         this.key = key;
         this.value = xmlText;
     }

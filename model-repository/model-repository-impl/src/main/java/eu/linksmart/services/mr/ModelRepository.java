@@ -15,6 +15,7 @@ import eu.linksmart.services.mr.exceptions.ResourceNotFound;
 import eu.linksmart.services.mr.exceptions.ResourceTypeUnknown;
 import eu.linksmart.services.mr.storage.DBStorage;
 import eu.linksmart.services.mr.storage.DBStorageEntry;
+import eu.linksmart.services.mr.storage.StorageEntryXmi;
 
 /**
  * Model Repository
@@ -59,7 +60,7 @@ public class ModelRepository {
         	try {
         		modelJsonString = new JsonParser().parse(jsonModelDoc).getAsJsonObject();
         	} catch(Exception e) {
-        		throw new ResourceTypeUnknown("resource type is unknown", e);
+        		throw new ResourceTypeUnknown("resource type is unknown, should be parsable json ", e);
         	}
         	
         	String identifier = null;
@@ -67,13 +68,13 @@ public class ModelRepository {
         	try {
         		identifier = modelJsonString.get("name").getAsString() + "." + modelJsonString.get("version").getAsString();
         	} catch(Exception e) {
-        		throw new ResourceInvalid("resource document is invalid",e);
+        		throw new ResourceInvalid("resource document is invalid: unable to read name and version from given json document",e);
         	}
         	    
-            DBStorageEntry addEntry = new DBStorageEntry(identifier, DOMAIN_MODEL_JSON, jsonModelDoc);
+            DBStorageEntry addEntry = new DBStorageEntry(identifier, jsonModelDoc);
             
             if (!storage.add(addEntry))
-            	throw new RepositoryException("[add] domain model Json document could not be stored for identifier: " + identifier);
+            	throw new RepositoryException("[add] domain model Json document could not be stored for identifier [" + identifier + "] perhaps a document with same identifier already exist");
             
             LOG.info("domain model Json document added successfully with identifier: " + identifier);
             
@@ -95,9 +96,6 @@ public class ModelRepository {
             if (entry == null)
             	throw new ResourceNotFound("[get] domain model Json document could not be found for identifier: " + identifier);
             
-            if(entry.getType() != DOMAIN_MODEL_JSON)
-            	throw new ResourceTypeUnknown("[get] retrieved domain model is not Json for identifier: " + identifier);
-
             LOG.info( "domain model Json document retrieved successfully for identifier: " + identifier);
             
             return entry.getValue();
@@ -124,15 +122,15 @@ public class ModelRepository {
         	try {
         		String docIdentifier = modelJsonString.get("name").getAsString() + "." + modelJsonString.get("version").getAsString();
         		if(!(identifier.equals(docIdentifier)))
-        			throw new ResourceInvalid("given identifier [" + identifier + "] is different from document identifier [" + docIdentifier + "]");
+        			throw new ResourceInvalid("provided identifier [" + identifier + "] is different from document's identifier [" + docIdentifier + "]");
         	} catch(Exception e) {
-        		throw new ResourceInvalid("resource document is invalid",e);
+        		throw new ResourceInvalid("resource document is invalid: unable to read name and version from given json document",e);
         	}
         	
-            DBStorageEntry updateEntry = new DBStorageEntry(identifier, DOMAIN_MODEL_JSON, jsonModelDoc);
+            DBStorageEntry updateEntry = new DBStorageEntry(identifier, jsonModelDoc);
             
             if (!storage.update(updateEntry)) {
-                throw new ResourceNotFound("[update] domain model Json document could not be updated for identifier: " + identifier);
+                throw new ResourceNotFound("[update] domain model Json document could not be updated for identifier [" + identifier + "] probably identifier doesn't already exist");
             }
 
             LOG.info( "domain model Json document updated successfully for identifier: " + identifier);
@@ -171,10 +169,10 @@ public class ModelRepository {
         	
         	LOG.debug("adding domain model Xmi document");
         	    
-            DBStorageEntry addEntry = new DBStorageEntry(modelIdentifier, DOMAIN_MODEL_XMI, xmiModelDoc);
+        	StorageEntryXmi addEntry = new StorageEntryXmi(modelIdentifier, xmiModelDoc);
             
-            if (!storage.add(addEntry)) {
-                throw new RepositoryException("[add] domain model Xmi document could not be stored for identifier: " + modelIdentifier);
+            if (!storage.addXmi(addEntry)) {
+                throw new RepositoryException("[add] domain model Xmi document could not be stored for identifier [" + modelIdentifier + "] perhaps a document with same identifier already exist");
             }
 
             LOG.info("domain model Xmi document added successfully with identifier: " + modelIdentifier);
@@ -192,13 +190,10 @@ public class ModelRepository {
         	
         	LOG.debug( "getting domain model Xmi document" );
         	
-        	DBStorageEntry entry = storage.get(identifier);
+        	StorageEntryXmi entry = storage.getXmi(identifier);
             
             if (entry == null)
             	throw new ResourceNotFound("[get] domain model Xmi document could not be found for identifier: " + identifier);
-            
-            if(entry.getType() != DOMAIN_MODEL_XMI)
-            	throw new ResourceTypeUnknown("[get] retrieved domain model is not Xmi for identifier: " + identifier);
             	
             LOG.info( "domain model Xmi document retrieved successfully for identifier: " + identifier);
             
@@ -215,10 +210,10 @@ public class ModelRepository {
         	
         	LOG.debug( "updating domain model Xmi document" );
         	
-            DBStorageEntry updateEntry = new DBStorageEntry(identifier, DOMAIN_MODEL_XMI, xmiModelDoc);
+        	StorageEntryXmi updateEntry = new StorageEntryXmi(identifier, xmiModelDoc);
             
-            if (!storage.update(updateEntry))
-            	throw new ResourceNotFound("[update] domain model Xmi document could not be updated for identifier: " + identifier);
+            if (!storage.updateXmi(updateEntry))
+            	throw new ResourceNotFound("[update] domain model Xmi document could not be updated for identifier [" + identifier + "] probably identifier doesn't already exist");
            
             LOG.info( "domain model Xmi document updated successfully for identifier: " + identifier);
             
@@ -235,7 +230,7 @@ public class ModelRepository {
         	
         	LOG.debug( "removing domain model Xmi document" );
         	
-        	if (!storage.delete(modelIdentifier))
+        	if (!storage.deleteXmi(modelIdentifier))
                 throw new ResourceNotFound("[update] domain model Xmi document with identifier [" + modelIdentifier + "] does not exist.");
                    
             LOG.info( "domain model Xmi document removed successfully with identifier: " + modelIdentifier);
@@ -247,14 +242,13 @@ public class ModelRepository {
         }
 	}
 	
-	public List<String> listAllModels(int type) throws RepositoryException {
+	public List<String> listJson() throws RepositoryException {
 		
 		try {
         	
-			List<DBStorageEntry> entries = storage.filterByType(type);
-			
 			Vector<String> result = new Vector<String>();
 			
+			List<DBStorageEntry> entries = storage.listJson();
             Iterator<DBStorageEntry> it = entries.iterator();
             
             while (it.hasNext()) {
@@ -263,6 +257,44 @@ public class ModelRepository {
                    
             return result;
             
+        } catch (Exception e) {
+        	throw new RepositoryException(e);
+        }
+	}
+	
+	public List<String> listXmi() throws RepositoryException {
+		
+		try {
+        	
+			Vector<String> result = new Vector<String>();
+			
+			List<StorageEntryXmi> entries = storage.listXmi();
+            Iterator<StorageEntryXmi> it = entries.iterator();
+            
+            while (it.hasNext()) {
+                result.add(it.next().getKey());
+            }
+                   
+            return result;
+            
+        } catch (Exception e) {
+        	throw new RepositoryException(e);
+        }
+	}
+	
+	public String generateJsonModel(String modelIdentifier) throws ResourceNotFound, RepositoryException {
+		
+		try {
+			
+			StorageEntryXmi entry = storage.getXmi(modelIdentifier);
+            
+            if (entry == null)
+            	throw new ResourceNotFound("[generateJsonModel] domain model Xmi document could not be found for identifier: " + modelIdentifier);
+            
+            String xmiDoc = entry.getValue();
+            
+        	return new JsonObject().toString();
+        	
         } catch (Exception e) {
         	throw new RepositoryException(e);
         }

@@ -16,6 +16,10 @@ import javax.ws.rs.core.UriInfo;
 
 import org.apache.log4j.Logger;
 
+import eu.linksmart.services.mr.exceptions.ResourceInvalid;
+import eu.linksmart.services.mr.exceptions.ResourceNotFound;
+import eu.linksmart.services.mr.exceptions.ResourceTypeUnknown;
+
 /**
  * @author hrasheed
  * 
@@ -35,6 +39,9 @@ public class DomainModel {
 		try {
 			String modelJson = ModelRepository.getInstance().getModel(modelIdentifier);
 			return Response.status(Response.Status.OK).entity(modelJson).build();
+		} catch (ResourceNotFound e) {
+			LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
@@ -49,6 +56,15 @@ public class DomainModel {
 			ModelRepository.getInstance().updateModel(modelIdentifier, jsonModelDoc);
 			URI modelUri = uriInfo.getAbsolutePathBuilder().build();
 			return Response.status(Response.Status.OK).entity(modelUri.toString()).build();
+		} catch (ResourceNotFound e) {
+			LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+		} catch (ResourceTypeUnknown e) {
+			LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+		} catch (ResourceInvalid e) {
+			LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
@@ -62,6 +78,9 @@ public class DomainModel {
 		try {
 			boolean status = ModelRepository.getInstance().deleteModel(modelIdentifier);
 			return Response.status(Response.Status.OK).entity(Boolean.toString(status)).build();
+		} catch (ResourceNotFound e) {
+			LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();

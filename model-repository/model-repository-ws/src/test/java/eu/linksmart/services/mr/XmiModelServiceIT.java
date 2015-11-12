@@ -3,40 +3,21 @@ package eu.linksmart.services.mr;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.MessageFormat;
-import java.util.List;
-
-import junit.framework.TestCase;
 
 import org.apache.log4j.Logger;
-import org.junit.Ignore;
 
 import eu.linksmart.services.mr.client.ModelRepositoryClient;
 
-public class XmiModelServiceIT extends TestCase {
-
-    private static final Logger LOG = Logger.getLogger(XmiModelServiceIT.class);
-    
-    private String URL = "http://localhost:9090/model-repository/modelrepo";
+public class XmiModelServiceIT extends AbstractIT {
 	
-    @Override
+	private static final Logger LOG = Logger.getLogger(XmiModelServiceIT.class);
+	
     protected void setUp() {
-        if(LOG.isDebugEnabled()) {
-        	LOG.debug("================================================================================");
-        	LOG.debug("Entering integration test: " + this.getName());
-        	LOG.debug("--------------------------------------------------------------------------------");
-        }
-        
-        LOG.info( MessageFormat.format( "model repository URL at {0}", new Object[] { this.URL } ) );
+        super.setUp();
     }
 
-    @Override
     protected void tearDown() {
-        if(LOG.isDebugEnabled()) {
-        	LOG.debug("--------------------------------------------------------------------------------");
-        	LOG.debug("Leaving integration test: " + this.getName());
-        	LOG.debug("================================================================================");
-        }
+    	super.tearDown();
     }
 	
 	public void testXmi() throws Exception {
@@ -73,26 +54,4 @@ public class XmiModelServiceIT extends TestCase {
 		}
     }
     
-    public void testXmiList() throws Exception {
-    	try {
-    		
-    		ModelRepositoryClient.initialize(URL);
-    		
-			String xmiModelString = new String(Files.readAllBytes(Paths.get(getClass().getResource("/model.xmi").toURI())), Charset.defaultCharset());
-			String modelURI = ModelRepositoryClient.addXmi("sample-xmi-id-1", xmiModelString);
-        	assertNotNull(modelURI);
-        	System.out.println("URI: " + modelURI);
-        	
-    		List<String> listXmi = ModelRepositoryClient.listXmiModels();
-        	assertNotNull(listXmi);
-        	System.out.println("listXmi: " + listXmi.size());
-        	
-        	String status = ModelRepositoryClient.deleteXmi(modelURI);
-        	assertNotNull(status);
-        } catch (Exception e) {
-        	LOG.error(e);
-        	fail("testXmiList failed: " + e.getMessage());
-		}
-    }
-
 }

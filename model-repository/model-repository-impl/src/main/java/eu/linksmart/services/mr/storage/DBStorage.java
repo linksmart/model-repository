@@ -52,7 +52,8 @@ public class DBStorage {
         //
     	// check if resource with same identifier already exist
     	//
-    	DBStorageEntry exist = em.find(DBStorageEntry.class, entry.getKey());
+        DBStorageEntry exist = em.find(DBStorageEntry.class, entry.getKey());
+        	
     	if(exist != null) {
     		em.close();
     		return false;
@@ -79,7 +80,6 @@ public class DBStorage {
         try {
             em.getTransaction().begin();
             DBStorageEntry update = em.find(DBStorageEntry.class, entry.getKey());
-            update.setType(entry.getType());
             update.setValue(entry.getValue());
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -132,14 +132,125 @@ public class DBStorage {
     }
 
     @SuppressWarnings("finally")
-	public List<DBStorageEntry> filterByType(int type) {
+	public List<DBStorageEntry> listJson() {
     	
     	List<DBStorageEntry> queryList = null;
     	EntityManager em = emf.createEntityManager();
     	
     	try {
     		em.getTransaction().begin();
-            String jpql = "select se from DBStorageEntry se where se.type=" + type;
+            String jpql = "select se from DBStorageEntry se";
+            Query query = em.createQuery(jpql);
+            queryList = query.getResultList();
+            em.getTransaction().commit();
+    	} catch (Exception e) {
+    		queryList = null;
+        } finally {
+            em.close();
+            return queryList;
+        }
+    }
+    
+    //
+    // XMI document
+    //
+    @SuppressWarnings("finally")
+	public boolean addXmi(StorageEntryXmi entry) {
+    	
+        boolean result = true;
+        
+        EntityManager em = emf.createEntityManager();
+        
+        //
+    	// check if resource with same identifier already exist
+    	//
+        StorageEntryXmi exist = em.find(StorageEntryXmi.class, entry.getKey());
+    	if(exist != null) {
+    		em.close();
+    		return false;
+    	}
+    		
+        try {
+            em.getTransaction().begin();
+            em.persist(entry);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            result = false;
+        } finally {
+            em.close();
+            return result;
+        }
+    }
+    
+    @SuppressWarnings("finally")
+	public boolean updateXmi(StorageEntryXmi entry) {
+    	
+        boolean result = true;
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            em.getTransaction().begin();
+            StorageEntryXmi update = em.find(StorageEntryXmi.class, entry.getKey());
+            update.setValue(entry.getValue());
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            result = false;
+        } finally {
+            em.close();
+            return result;
+        }
+    }
+
+    @SuppressWarnings("finally")
+	public StorageEntryXmi getXmi(String resourceKey) {
+    	
+    	StorageEntryXmi result = null;
+    	EntityManager em = emf.createEntityManager();
+    	
+    	try {
+            em.getTransaction().begin();
+            result = (StorageEntryXmi) em.find(StorageEntryXmi.class, resourceKey);
+            em.getTransaction().commit();
+    	} catch (Exception e) {
+    		result = null;
+        } finally {
+            em.close();
+            return result;
+        }
+    }
+
+    @SuppressWarnings("finally")
+	public boolean deleteXmi(String resourceKey) {
+    	
+    	boolean result = true;
+    	EntityManager em = emf.createEntityManager();
+    	
+    	try {
+            String jpql = "delete from StorageEntryXmi se where se.key=\"" + resourceKey + "\"";
+            em.getTransaction().begin();
+            Query query = em.createQuery(jpql);
+            int row = query.executeUpdate();
+            em.getTransaction().commit();
+            if (row == 0) {
+            	result = false;
+            } 
+    	} catch (Exception e) {
+    		result = false;
+        } finally {
+            em.close();
+            return result;
+        }
+    }
+
+    @SuppressWarnings("finally")
+	public List<StorageEntryXmi> listXmi() {
+    	
+    	List<StorageEntryXmi> queryList = null;
+    	EntityManager em = emf.createEntityManager();
+    	
+    	try {
+    		em.getTransaction().begin();
+            String jpql = "select se from StorageEntryXmi se";
             Query query = em.createQuery(jpql);
             queryList = query.getResultList();
             em.getTransaction().commit();

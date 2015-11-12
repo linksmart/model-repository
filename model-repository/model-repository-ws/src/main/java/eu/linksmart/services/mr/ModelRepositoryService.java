@@ -7,6 +7,10 @@ import org.apache.log4j.Logger;
 
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
+import eu.linksmart.services.mr.exceptions.ResourceInvalid;
+import eu.linksmart.services.mr.exceptions.ResourceNotFound;
+import eu.linksmart.services.mr.exceptions.ResourceTypeUnknown;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -30,7 +34,7 @@ public class ModelRepositoryService {
     }
     
     @POST
-	@Consumes(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)           
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response add(String jsonModelDoc, @Context UriInfo uriInfo) {
     	
@@ -45,6 +49,35 @@ public class ModelRepositoryService {
 			identifier = ModelRepository.getInstance().addModel(jsonModelDoc);
 			URI modelUri = uriInfo.getAbsolutePathBuilder().path("json/" + identifier).build();
 			return Response.status(Response.Status.OK).entity(modelUri.toString()).build();
+		} catch (ResourceTypeUnknown e) {
+			LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+		} catch (ResourceInvalid e) {
+			LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+		}
+	}
+    
+    @PUT
+	@Consumes(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response generateJsonModel(String modelIdentifier) {
+    	
+		if(modelIdentifier == null)
+			return Response.status(Response.Status.BAD_REQUEST).entity("modelIdentifier is null").build();
+		
+		if(modelIdentifier.length() == 0)
+			return Response.status(Response.Status.NO_CONTENT).entity("modelIdentifier is empty").build();
+		
+		try {
+			String jsonModelDoc = ModelRepository.getInstance().generateJsonModel(modelIdentifier);
+			return Response.status(Response.Status.OK).entity(jsonModelDoc).build();
+		} catch (ResourceNotFound e) {
+			LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
@@ -59,7 +92,7 @@ public class ModelRepositoryService {
     	
     	try {
     		
-    		List<String> entries = ModelRepository.getInstance().listAllModels(ModelRepository.DOMAIN_MODEL_JSON);
+    		List<String> entries = ModelRepository.getInstance().listJson();
     		
             MultivaluedMap<String, String> entryParams = new MultivaluedMapImpl();
             
@@ -84,7 +117,7 @@ public class ModelRepositoryService {
     	
     	try {
     		
-    		List<String> entries = ModelRepository.getInstance().listAllModels(ModelRepository.DOMAIN_MODEL_XMI);
+    		List<String> entries = ModelRepository.getInstance().listXmi();
     		
     		MultivaluedMap<String, String> entryParams = new MultivaluedMapImpl();
     		

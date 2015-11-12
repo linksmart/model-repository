@@ -17,6 +17,10 @@ import javax.ws.rs.core.UriInfo;
 
 import org.apache.log4j.Logger;
 
+import eu.linksmart.services.mr.exceptions.ResourceInvalid;
+import eu.linksmart.services.mr.exceptions.ResourceNotFound;
+import eu.linksmart.services.mr.exceptions.ResourceTypeUnknown;
+
 /**
  * @author hrasheed
  * 
@@ -44,6 +48,9 @@ public class XmiDomainModel {
 			ModelRepository.getInstance().addXmiModel(modelIdentifier, xmiModelDoc);
 			URI modelUri = uriInfo.getAbsolutePathBuilder().build();
 			return Response.status(Response.Status.OK).entity(modelUri.toString()).build();
+		} catch (ResourceTypeUnknown e) {
+			LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
@@ -57,6 +64,9 @@ public class XmiDomainModel {
 		try {
 			String modelXmi = ModelRepository.getInstance().getXmiModel(modelIdentifier);
 			return Response.status(Response.Status.OK).entity(modelXmi).build();
+		} catch (ResourceNotFound e) {
+			LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
@@ -71,6 +81,12 @@ public class XmiDomainModel {
 			ModelRepository.getInstance().updateXmiModel(modelIdentifier, xmiModelDoc);
 			URI modelUri = uriInfo.getAbsolutePathBuilder().build();
 			return Response.status(Response.Status.OK).entity(modelUri.toString()).build();
+		} catch (ResourceNotFound e) {
+			LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+		} catch (ResourceTypeUnknown e) {
+			LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
@@ -84,6 +100,9 @@ public class XmiDomainModel {
 		try {
 			boolean status = ModelRepository.getInstance().deleteXmiModel(modelIdentifier);
 			return Response.status(Response.Status.OK).entity(Boolean.toString(status)).build();
+		} catch (ResourceNotFound e) {
+			LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();

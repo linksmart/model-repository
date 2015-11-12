@@ -3,10 +3,7 @@ package eu.linksmart.services.mr;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.MessageFormat;
 import java.util.List;
-
-import junit.framework.TestCase;
 
 import org.apache.log4j.Logger;
 
@@ -16,65 +13,16 @@ import eu.linksmart.services.mr.client.ModelRepositoryClient;
  * @author hrasheed
  * 
  */
-public class ModelRepositoryServiceIT extends TestCase {
+public class ModelRepositoryServiceIT extends AbstractIT {
 
-    private static final Logger LOG = Logger.getLogger(ModelRepositoryServiceIT.class);
-    
-    private String URL = "http://localhost:9090/model-repository/modelrepo";
+	private static final Logger LOG = Logger.getLogger(ModelRepositoryServiceIT.class);
 	
-    @Override
     protected void setUp() {
-        if(LOG.isDebugEnabled()) {
-        	LOG.debug("================================================================================");
-        	LOG.debug("Entering integration test: " + this.getName());
-        	LOG.debug("--------------------------------------------------------------------------------");
-        }
-        
-        LOG.info( MessageFormat.format( "model repository URL at {0}", new Object[] { this.URL } ) );
+        super.setUp();
     }
 
-    @Override
     protected void tearDown() {
-        if(LOG.isDebugEnabled()) {
-        	LOG.debug("--------------------------------------------------------------------------------");
-        	LOG.debug("Leaving integration test: " + this.getName());
-        	LOG.debug("================================================================================");
-        }
-    }
-    
-    public void testJson() throws Exception {
-    	try {
-    		
-        	ModelRepositoryClient.initialize(URL);
-        	
-        	String jsonModelString = new String(Files.readAllBytes(Paths.get(getClass().getResource("/model.json").toURI())), Charset.defaultCharset());
-        	
-        	String modelURI = ModelRepositoryClient.add(jsonModelString);
-        	assertNotNull(modelURI);
-        	System.out.println("URI: " + modelURI);
-        	
-        	String jsonModel = ModelRepositoryClient.get(modelURI);
-        	assertNotNull(jsonModel);
-        	System.out.println("get: " + jsonModel);
-        	
-        	String jsonModelUpdate = new String(Files.readAllBytes(Paths.get(getClass().getResource("/model_update.json").toURI())), Charset.defaultCharset());
-        	
-        	String modelURIUpdated = ModelRepositoryClient.update(modelURI, jsonModelUpdate);
-        	assertNotNull(modelURIUpdated);
-        	System.out.println("URI-update: " + modelURIUpdated);
-        	
-        	String jsonModelUpdated = ModelRepositoryClient.get(modelURIUpdated);
-        	assertNotNull(jsonModelUpdated);
-        	System.out.println("get-update: " + jsonModelUpdated);
-        	
-        	String status = ModelRepositoryClient.delete(modelURIUpdated);
-        	assertNotNull(status);
-        	System.out.println("delete-status: " + status);
-            
-        } catch (Exception e) {
-        	LOG.error(e);
-        	fail("testJson failed: " + e.getMessage());
-		}
+    	super.tearDown();
     }
     
     public void testJsonList() throws Exception {
@@ -86,18 +34,18 @@ public class ModelRepositoryServiceIT extends TestCase {
         	
         	String modelURI = ModelRepositoryClient.add(jsonModelString);
         	assertNotNull(modelURI);
-        	System.out.println("URI: " + modelURI);
+        	LOG.info("URI: " + modelURI);
         	
         	
         	String jsonModel2 = new String(Files.readAllBytes(Paths.get(getClass().getResource("/model_2.json").toURI())), Charset.defaultCharset());
         	
         	String modelURI2 = ModelRepositoryClient.add(jsonModel2);
         	assertNotNull(modelURI2);
-        	System.out.println("URI2: " + modelURI2);
+        	LOG.info("URI2: " + modelURI2);
         	
         	List<String> listJson = ModelRepositoryClient.listJsonModels();
         	assertNotNull(listJson);
-        	System.out.println("listJson: " + listJson.size());
+        	LOG.info("listJson: " + listJson.size());
         	
         	String status = ModelRepositoryClient.delete(modelURI);
         	assertNotNull(status);
@@ -108,6 +56,52 @@ public class ModelRepositoryServiceIT extends TestCase {
         } catch (Exception e) {
         	LOG.error(e);
         	fail("testJsonList failed: " + e.getMessage());
+		}
+    }
+    
+    public void testXmiList() throws Exception {
+    	try {
+    		
+    		ModelRepositoryClient.initialize(URL);
+    		
+			String xmiModelString = new String(Files.readAllBytes(Paths.get(getClass().getResource("/model.xmi").toURI())), Charset.defaultCharset());
+			String modelURI = ModelRepositoryClient.addXmi("sample-xmi-id-1", xmiModelString);
+        	assertNotNull(modelURI);
+        	LOG.info("URI: " + modelURI);
+        	
+    		List<String> listXmi = ModelRepositoryClient.listXmiModels();
+        	assertNotNull(listXmi);
+        	LOG.info("listXmi: " + listXmi.size());
+        	
+        	String status = ModelRepositoryClient.deleteXmi(modelURI);
+        	assertNotNull(status);
+        } catch (Exception e) {
+        	LOG.error(e);
+        	fail("testXmiList failed: " + e.getMessage());
+		}
+    }
+    
+    public void testGenerateJson() throws Exception {
+    	try {
+    		
+    		ModelRepositoryClient.initialize(URL);
+    		
+    		String xmiModelString = new String(Files.readAllBytes(Paths.get(getClass().getResource("/model.xmi").toURI())), Charset.defaultCharset());
+        	
+        	String modelURI = ModelRepositoryClient.addXmi("sample-xmi-id", xmiModelString);
+        	assertNotNull(modelURI);
+        	LOG.info("URI: " + modelURI);
+        	
+        	String jsonModelDoc = ModelRepositoryClient.generateJsonModel("sample-xmi-id");
+        	assertNotNull(jsonModelDoc);
+        	LOG.info("JsonDoc: " + jsonModelDoc);
+        	
+        	String status = ModelRepositoryClient.deleteXmi(modelURI);
+        	assertNotNull(status);
+        	
+        } catch (Exception e) {
+        	LOG.error(e);
+        	fail("testGenerateJson failed: " + e.getMessage());
 		}
     }
     

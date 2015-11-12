@@ -219,4 +219,21 @@ public class ModelRepositoryClient {
 			return null;
 		}	
     }
+    
+    public static String generateJsonModel(String modelIdentifier) {
+    	
+    	try {
+    	
+    		Client client = Client.create();
+            WebResource webResourceClient = client.resource(BASE_URL);
+
+            String outcome = webResourceClient.type("text/plain; charset=utf-8").accept("application/json; charset=utf-8").put(String.class, modelIdentifier);
+            
+            return outcome;
+            
+        } catch (Exception e) {
+			LOG.error(e);
+			return null;
+		}	
+    }
 }

@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 import eu.linksmart.services.mr.exceptions.RepositoryException;
@@ -37,6 +38,8 @@ public class PersistenceTest {
 			String identifierUpdate = ModelRepository.getInstance().updateModel(identifier, jsonModelUpdate);
 			
 			System.out.println("get-updated: " + ModelRepository.getInstance().getModel(identifierUpdate));
+			
+			System.out.println("list-json: " + ModelRepository.getInstance().listJson().size());
 			
 			ModelRepository.getInstance().deleteModel(identifierUpdate);
 			
@@ -71,29 +74,4 @@ public class PersistenceTest {
 		}
 	}
 	
-	@Test
-	public void testXmiStorage() throws IOException, URISyntaxException {
-		
-		try {
-			
-			byte[] encoded = Files.readAllBytes(Paths.get(getClass().getResource("/model.xmi").toURI()));
-			String xmiModelDoc = new String(encoded, Charset.defaultCharset());
-			
-			String identifier = ModelRepository.getInstance().addXmiModel("sample", xmiModelDoc);
-		
-			System.out.println("get xmi: " + ModelRepository.getInstance().getXmiModel(identifier));
-			
-			String xmiModelUpdate = new String(Files.readAllBytes(Paths.get(getClass().getResource("/model.xmi").toURI())), Charset.defaultCharset());
-			
-			String identifierUpdate = ModelRepository.getInstance().updateXmiModel(identifier, xmiModelUpdate);
-			
-			System.out.println("get-xmi-updated: " + ModelRepository.getInstance().getXmiModel(identifierUpdate));
-			
-			ModelRepository.getInstance().deleteXmiModel(identifierUpdate);
-			
-		} catch (ResourceTypeUnknown | ResourceInvalid | RepositoryException | ResourceNotFound e) {
-			e.printStackTrace();
-		}		
-	}
-
 }

@@ -20,7 +20,7 @@
 		</init-param>
 		<init-param>
 			<param-name>com.sun.jersey.config.property.packages</param-name>
-			<param-value>eu.linksmart.services.mr</param-value>
+			<param-value>eu.linksmart.services.mr.service</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
     </servlet>

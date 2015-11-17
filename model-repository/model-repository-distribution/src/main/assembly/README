@@ -1,7 +1,7 @@
 README 	
 
 General information
-	E3 - Shop Floor Data Aggregation Middleware Connector (DMC)
+	LinkSmart Services - Domain Model Repository Service
 
 AUTHORS 	Hassan Rasheed
 
@@ -13,9 +13,6 @@ INSTALL
   	Install a 1.6 JDK. 
   	
 Depending on OS either call "start.sh" or "start.bat" to start the client.
-
-start the client with given monitoring sleep time
-start.sh 10000    
 
 COPYING / LICENSE 	see LICENSE for details
 

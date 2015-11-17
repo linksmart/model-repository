@@ -9,6 +9,25 @@
     </parent>
 
     <artifactId>model-repository-distribution</artifactId>
+    
+    <dependencies>
+        <dependency>
+        	<groupId>eu.linksmart.services.mr</groupId>
+            <artifactId>model-repository-impl</artifactId>
+        </dependency>
+        <dependency>
+    		<groupId>eu.linksmart.services.mr</groupId>
+    		<artifactId>model-repository-service</artifactId>
+		</dependency>
+		<dependency>
+        	<groupId>eu.linksmart.services.mr</groupId>
+            <artifactId>model-repository-client</artifactId>
+        </dependency>
+        <dependency>
+        	<groupId>eu.linksmart.services.mr</groupId>
+            <artifactId>model-repository-web-container</artifactId>
+        </dependency>
+    </dependencies>
 	
 	 <build>
         <resources>
@@ -37,7 +56,6 @@
             </plugin>
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>2.4</version>
                 <configuration>
                     <archive>
                         <manifestEntries>

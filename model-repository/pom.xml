@@ -11,12 +11,14 @@
 	<packaging>pom</packaging>
 
     <modules>
+    	<module>model-repository-types</module>
         <module>model-repository-impl</module>
-        <module>model-repository-types</module>
-        <module>model-repository-ws</module>
+	   	<module>model-repository-service</module>
 	   	<module>model-repository-client</module>
 	   	<module>model-repository-type-converter</module>
+	   	<module>model-repository-ws</module>
         <module>model-repository-distribution</module>
+        <module>model-repository-web-container</module>
     </modules>
 
 	<properties>
@@ -102,6 +104,11 @@
         		<version>${linksmart.mr.version}</version>
       		</dependency>
       		<dependency>
+        		<groupId>eu.linksmart.services.mr</groupId>
+        		<artifactId>model-repository-service</artifactId>
+        		<version>${linksmart.mr.version}</version>
+      		</dependency>
+      		<dependency>
     			<groupId>eu.linksmart.services.mr</groupId>
     			<artifactId>model-repository-type-converter</artifactId>
     			<version>${linksmart.mr.version}</version>
@@ -114,6 +121,12 @@
       		<dependency>
 				<groupId>eu.linksmart.services.mr</groupId>
 				<artifactId>model-repository-ws</artifactId>
+				<version>${linksmart.mr.version}</version>
+				<type>war</type>
+			</dependency>
+			<dependency>
+				<groupId>eu.linksmart.services.mr</groupId>
+				<artifactId>model-repository-web-container</artifactId>
 				<version>${linksmart.mr.version}</version>
 			</dependency>
             <!-- other dependencies -->
@@ -147,6 +160,17 @@
 				<groupId>com.sun.jersey</groupId>
 				<artifactId>jersey-bundle</artifactId>
 				<version>${jersy.version}</version>
+			</dependency>
+			<!-- Jetty Container -->
+			<dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-server</artifactId>
+				<version>9.2.11.v20150529</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-servlet</artifactId>
+				<version>9.2.11.v20150529</version>
 			</dependency>
         	<!-- Persistence, EclipseLink -->
         	<dependency>

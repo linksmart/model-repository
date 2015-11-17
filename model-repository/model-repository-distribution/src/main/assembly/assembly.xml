@@ -14,15 +14,18 @@
             <outputDirectory>lib</outputDirectory>
         </dependencySet>
     </dependencySets>
+    
+    <fileSets>
+		<fileSet>
+            <directory>src/main/resources</directory>
+            <outputDirectory>/</outputDirectory>
+            <filtered>true</filtered>
+        </fileSet>    
+    </fileSets>
 
     <files>
         <file>
             <source>src/main/assembly/README</source>
-            <fileMode>644</fileMode>
-            <filtered>true</filtered>
-        </file>
-        <file>
-            <source>src/main/assembly/log4j.properties</source>
             <fileMode>644</fileMode>
             <filtered>true</filtered>
         </file>

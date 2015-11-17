@@ -1,4 +1,4 @@
-echo starting iml-sosi-client...
+echo starting model-repository...
 @echo off
 setLocal EnableDelayedExpansion
 set CLASSPATH="
@@ -6,5 +6,5 @@ for /R ./lib %%a in (*.jar) do (
   set CLASSPATH=!CLASSPATH!;%%a
 )
 set CLASSPATH=!CLASSPATH!"
-echo !CLASSPATH!
-java -client -cp %CLASSPATH% de.fraunhofer.e3.dmc.client.DMCApplication "$@";
+
+java -client -cp %CLASSPATH% eu.linksmart.services.mr.MRApplication "$@";

@@ -14,7 +14,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import eu.linksmart.services.mr.ModelRepository;
 import eu.linksmart.services.mr.exceptions.ResourceInvalid;
@@ -28,7 +29,7 @@ import eu.linksmart.services.mr.exceptions.ResourceTypeUnknown;
 @Path("/modelrepo/json/{modelIdentifier}")
 public class DomainModel {
 	
-	private static final Logger LOG = Logger.getLogger(DomainModel.class);
+	private final Logger LOG = LoggerFactory.getLogger(DomainModel.class);
 	
 	public DomainModel() {
 	}

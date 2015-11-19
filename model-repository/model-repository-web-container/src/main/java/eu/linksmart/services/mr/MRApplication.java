@@ -3,10 +3,17 @@ package eu.linksmart.services.mr;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class MRApplication {
 	
+	private final Logger LOG = LoggerFactory.getLogger(MRApplication.class);
+	
 	private String host;
+	
 	private int port;
+	
 	private String pathContext = "model-repository";
 	
 	private final String PROPERTY_FILE = "/model-repository.properties";
@@ -19,48 +26,37 @@ public class MRApplication {
 	
 	public MRApplication() {
 		
-		System.out.println("------------------------------------------------------------------------------------");
-		System.out.println("staring the model repository");
-		System.out.println("------------------------------------------------------------------------------------");
+		LOG.info("------------------------------------------------------------------------------------");
+		LOG.info("staring the model repository");
+		LOG.info("------------------------------------------------------------------------------------");
 		
 		try {
 			readDefaults();
 		} catch (Exception e) {
-			System.err.println("unable to read configuration file: " + e.getMessage());
+			LOG.error("unable to read configuration file [" + PROPERTY_FILE + "] " + e.getMessage());
 			System.exit(1);
 		}
+		
+		container = new RepositoryWebContainer(this);
+		container.start();
 		
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 		    public void run() {
 		    	shutdown();
 		    }
 		});
-		
-		try {
-			container = new RepositoryWebContainer(this.host, this.port, this.pathContext);
-			container.start();
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println("unable to start the jetty web container, exiting...");
-			try {
-				container.stop();
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-			System.exit(1);
-		} 
 	}
 	
-	public void shutdown() {
-		try {
-			System.out.println("------------------------------------------------------------------------------------");
-			System.out.println("shutting down the model repository");
-			System.out.println("------------------------------------------------------------------------------------");
-			container.stop();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}	
-		System.exit(0);
+	protected void shutdown() {
+		LOG.info("------------------------------------------------------------------------------------");
+		LOG.info("shutting down the model repository");
+		LOG.info("------------------------------------------------------------------------------------");
+		container.stopContainer();
+		container.interrupt();
+		System.exit(1);
+		//Runtime.getRuntime().runFinalization();
+		//Runtime.getRuntime().exit(0);
+		//Runtime.getRuntime().halt(0); // this method should be used very carefully since it doesn't gracefully shutdown the virtual machine
 	}
 	
 	private void readDefaults() throws Exception {
@@ -74,11 +70,23 @@ public class MRApplication {
 		this.port = Integer.parseInt(prop.getProperty("model.repository.port"));
 		this.pathContext = prop.getProperty("model.repository.path");
 		
-		System.out.println("using host: " + this.host);
-		System.out.println("using port: " + this.port);
-		System.out.println("using path: " + this.pathContext);
+		LOG.info("using host: " + this.host);
+		LOG.info("using port: " + this.port);
+		LOG.info("using path: " + this.pathContext);
 		
         inputStream.close();
+	}
+	
+	protected final String getHost() {
+		return host;
+	}
+
+	protected final int getPort() {
+		return port;
+	}
+
+	protected final String getPathContext() {
+		return pathContext;
 	}
 
 }

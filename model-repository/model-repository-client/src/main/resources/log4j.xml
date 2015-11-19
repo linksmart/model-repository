@@ -7,8 +7,8 @@
         </layout>
     </appender>
 
-    <logger name="eu.optimis.workloadanalyzer">
-        <level value="TRACE"/>
+    <logger name="eu.linksmart.services.mr">
+        <level value="DEBUG"/>
     </logger>
 
     <root>

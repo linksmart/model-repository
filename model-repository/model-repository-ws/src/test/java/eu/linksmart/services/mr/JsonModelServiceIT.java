@@ -4,13 +4,14 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import eu.linksmart.services.mr.client.ModelRepositoryClient;
 
 public class JsonModelServiceIT extends AbstractIT {
 
-	private static final Logger LOG = Logger.getLogger(JsonModelServiceIT.class);
+	private final Logger LOG = LoggerFactory.getLogger(JsonModelServiceIT.class);
 	
     protected void setUp() {
         super.setUp();
@@ -29,28 +30,28 @@ public class JsonModelServiceIT extends AbstractIT {
         	
         	String modelURI = ModelRepositoryClient.add(jsonModelString);
         	assertNotNull(modelURI);
-        	System.out.println("URI: " + modelURI);
+        	LOG.info("URI: " + modelURI);
         	
         	String jsonModel = ModelRepositoryClient.get(modelURI);
         	assertNotNull(jsonModel);
-        	System.out.println("get: " + jsonModel);
+        	LOG.info("get: " + jsonModel);
         	
         	String jsonModelUpdate = new String(Files.readAllBytes(Paths.get(getClass().getResource("/model_update.json").toURI())), Charset.defaultCharset());
         	
         	String modelURIUpdated = ModelRepositoryClient.update(modelURI, jsonModelUpdate);
         	assertNotNull(modelURIUpdated);
-        	System.out.println("URI-update: " + modelURIUpdated);
+        	LOG.info("URI-update: " + modelURIUpdated);
         	
         	String jsonModelUpdated = ModelRepositoryClient.get(modelURIUpdated);
         	assertNotNull(jsonModelUpdated);
-        	System.out.println("get-update: " + jsonModelUpdated);
+        	LOG.info("get-update: " + jsonModelUpdated);
         	
         	String status = ModelRepositoryClient.delete(modelURIUpdated);
         	assertNotNull(status);
-        	System.out.println("delete-status: " + status);
+        	LOG.info("delete-status: " + status);
             
         } catch (Exception e) {
-        	LOG.error(e);
+        	LOG.error(e.getMessage());
         	fail("testJson failed: " + e.getMessage());
 		}
     }

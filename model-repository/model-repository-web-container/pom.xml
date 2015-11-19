@@ -28,6 +28,11 @@
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-servlet</artifactId>
 		</dependency>
+		<dependency>
+    		<groupId>eu.linksmart.services.mr</groupId>
+    		<artifactId>model-repository-service</artifactId>
+    		<scope>test</scope>
+		</dependency>		
     </dependencies>
 
 </project>

@@ -10,7 +10,9 @@ import javax.persistence.Query;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.ConfigurationFactory;
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import eu.linksmart.services.mr.ModelRepository;
 
@@ -20,7 +22,7 @@ import eu.linksmart.services.mr.ModelRepository;
  */
 public class DBStorage {
 	
-	private static Logger LOG = Logger.getLogger(ModelRepository.class.getName());
+	private final Logger LOG = LoggerFactory.getLogger(ModelRepository.class);
 
     private EntityManagerFactory emf = null;
     

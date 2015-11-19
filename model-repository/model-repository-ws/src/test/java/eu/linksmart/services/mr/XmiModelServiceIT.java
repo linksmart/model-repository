@@ -4,13 +4,14 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import eu.linksmart.services.mr.client.ModelRepositoryClient;
 
 public class XmiModelServiceIT extends AbstractIT {
 	
-	private static final Logger LOG = Logger.getLogger(XmiModelServiceIT.class);
+	private final Logger LOG = LoggerFactory.getLogger(XmiModelServiceIT.class);
 	
     protected void setUp() {
         super.setUp();
@@ -29,7 +30,7 @@ public class XmiModelServiceIT extends AbstractIT {
         	
         	String modelURI = ModelRepositoryClient.addXmi("sample-xmi-id", xmiModelString);
         	assertNotNull(modelURI);
-        	System.out.println("URI: " + modelURI);
+        	LOG.info("URI: " + modelURI);
         	
         	String xmiModel = ModelRepositoryClient.getXmi(modelURI);
         	assertNotNull(xmiModel);
@@ -39,17 +40,17 @@ public class XmiModelServiceIT extends AbstractIT {
         	
         	String modelURIUpdated = ModelRepositoryClient.updateXmi(modelURI, xmiModelUpdate);
         	assertNotNull(modelURIUpdated);
-        	System.out.println("URI-xmi-update: " + modelURIUpdated);
+        	LOG.info("URI-xmi-update: " + modelURIUpdated);
         	
         	String xmiModelUpdated = ModelRepositoryClient.getXmi(modelURIUpdated);
         	assertNotNull(xmiModelUpdated);
         	        	
         	String status = ModelRepositoryClient.deleteXmi(modelURIUpdated);
         	assertNotNull(status);
-        	System.out.println("delete-xmi-status: " + status);
+        	LOG.info("delete-xmi-status: " + status);
             
         } catch (Exception e) {
-        	LOG.error(e);
+        	LOG.error(e.getMessage());
         	fail("testXmi failed: " + e.getMessage());
 		}
     }

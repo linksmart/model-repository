@@ -3,7 +3,8 @@ package eu.linksmart.services.mr.service;
 import java.net.URI;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
@@ -28,7 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Path("/modelrepo")
 public class ModelRepositoryService {
 
-    private static final Logger LOG = Logger.getLogger(ModelRepositoryService.class);
+    private final Logger LOG = LoggerFactory.getLogger(ModelRepositoryService.class);
     
     public ModelRepositoryService() {
         LOG.info("initialized model repository service");

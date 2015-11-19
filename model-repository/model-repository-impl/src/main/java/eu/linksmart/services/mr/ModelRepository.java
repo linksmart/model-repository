@@ -4,7 +4,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -25,7 +26,7 @@ import eu.linksmart.services.mr.storage.StorageEntryXmi;
  */
 public class ModelRepository {
 
-	private static Logger LOG = Logger.getLogger(ModelRepository.class.getName());
+	private final Logger LOG = LoggerFactory.getLogger(ModelRepository.class);
 	
 	private static ModelRepository repositoryInstance = null;
 	

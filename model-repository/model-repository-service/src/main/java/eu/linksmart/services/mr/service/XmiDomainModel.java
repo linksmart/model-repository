@@ -15,10 +15,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import eu.linksmart.services.mr.ModelRepository;
-import eu.linksmart.services.mr.exceptions.ResourceInvalid;
 import eu.linksmart.services.mr.exceptions.ResourceNotFound;
 import eu.linksmart.services.mr.exceptions.ResourceTypeUnknown;
 
@@ -29,7 +29,7 @@ import eu.linksmart.services.mr.exceptions.ResourceTypeUnknown;
 @Path("/modelrepo/xmi/{modelIdentifier}")
 public class XmiDomainModel {
 	
-	private static final Logger LOG = Logger.getLogger(XmiDomainModel.class);
+	private final Logger LOG = LoggerFactory.getLogger(XmiDomainModel.class);
 	
 	public XmiDomainModel() {
 	}

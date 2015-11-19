@@ -4,11 +4,12 @@ import org.junit.Test;
 
 public class ContainerTest {
 	
-	@Test
-	public void testContainer() {
+	//@Test
+	public void testContainer() throws Exception {
 		
-		RepositoryWebContainer container = new RepositoryWebContainer();
-		//container.start();
+		MRApplication dm = new MRApplication();
+		
+		Thread.sleep(5000);
 		
     }
 

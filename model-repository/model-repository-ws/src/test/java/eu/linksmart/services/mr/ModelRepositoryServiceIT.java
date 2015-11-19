@@ -5,7 +5,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import eu.linksmart.services.mr.client.ModelRepositoryClient;
 
@@ -15,7 +16,7 @@ import eu.linksmart.services.mr.client.ModelRepositoryClient;
  */
 public class ModelRepositoryServiceIT extends AbstractIT {
 
-	private static final Logger LOG = Logger.getLogger(ModelRepositoryServiceIT.class);
+	private final Logger LOG = LoggerFactory.getLogger(ModelRepositoryServiceIT.class);
 	
     protected void setUp() {
         super.setUp();
@@ -54,7 +55,7 @@ public class ModelRepositoryServiceIT extends AbstractIT {
         	assertNotNull(status2);
         	
         } catch (Exception e) {
-        	LOG.error(e);
+        	LOG.error(e.getMessage());
         	fail("testJsonList failed: " + e.getMessage());
 		}
     }
@@ -76,7 +77,7 @@ public class ModelRepositoryServiceIT extends AbstractIT {
         	String status = ModelRepositoryClient.deleteXmi(modelURI);
         	assertNotNull(status);
         } catch (Exception e) {
-        	LOG.error(e);
+        	LOG.error(e.getMessage());
         	fail("testXmiList failed: " + e.getMessage());
 		}
     }
@@ -100,7 +101,7 @@ public class ModelRepositoryServiceIT extends AbstractIT {
         	assertNotNull(status);
         	
         } catch (Exception e) {
-        	LOG.error(e);
+        	LOG.error(e.getMessage());
         	fail("testGenerateJson failed: " + e.getMessage());
 		}
     }

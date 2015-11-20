@@ -49,6 +49,11 @@ public class ModelRepository {
         }
         return repositoryInstance;
     }
+    
+    public void closePersistence() {
+    	if(storage != null)
+    		storage.close();
+    }
 
 	public String addModel(String jsonModelDoc) throws ResourceTypeUnknown, ResourceInvalid, RepositoryException {
 		

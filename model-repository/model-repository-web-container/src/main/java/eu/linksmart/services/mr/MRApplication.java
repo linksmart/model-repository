@@ -53,9 +53,10 @@ public class MRApplication {
 		LOG.info("------------------------------------------------------------------------------------");
 		container.stopContainer();
 		container.interrupt();
-		System.exit(1);
-		//Runtime.getRuntime().runFinalization();
-		//Runtime.getRuntime().exit(0);
+		try { Thread.sleep(1000); } catch (InterruptedException e) { }
+		LOG.info("model repository terminated successfully");
+		Runtime.getRuntime().runFinalization();
+		System.exit(0);
 		//Runtime.getRuntime().halt(0); // this method should be used very carefully since it doesn't gracefully shutdown the virtual machine
 	}
 	

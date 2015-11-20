@@ -43,6 +43,12 @@ public class DBStorage {
             ex.printStackTrace();
         }
     }
+    
+    public void close() {
+    	if(emf != null) {
+    		emf.close();
+    	}
+    }
 
     @SuppressWarnings("finally")
 	public boolean add(DBStorageEntry entry) {

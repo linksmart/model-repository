@@ -1,5 +1,7 @@
 package eu.linksmart.services.mr;
 
+import java.net.InetSocketAddress;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.eclipse.jetty.server.Server;
@@ -29,7 +31,7 @@ public class RepositoryWebContainer extends Thread {
 			//System.setProperty("org.eclipse.jetty.util.log.class", "org.eclipse.jetty.util.log.Slf4jLog");
 			org.eclipse.jetty.util.log.Log.setLog(new org.eclipse.jetty.util.log.Slf4jLog());
 			
-			server = new Server(this.dm.getPort());
+			server = new Server(new InetSocketAddress(this.dm.getHost(), this.dm.getPort()));
 			
 			ServletContextHandler context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
 	        context.setContextPath("/");
@@ -50,9 +52,11 @@ public class RepositoryWebContainer extends Thread {
 			server.join();
 			
 		} catch (Exception e) {
-			LOG.error("unable to start the jetty web container." + e.getMessage());
+			e.printStackTrace();
+			LOG.error("error in jetty web container...shutting down" + e.getMessage());
 			this.dm.shutdown();
 		}
+		LOG.info("stopped the web container thread");
 	}
 	
 	protected void stopContainer() {
@@ -64,6 +68,5 @@ public class RepositoryWebContainer extends Thread {
 			e.printStackTrace();
 			LOG.error("unable to properly stop the jetty web container." + e.getMessage());
 		}
-		
 	}
 }

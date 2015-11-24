@@ -299,7 +299,7 @@ public class ModelRepository {
             
             String xmiDoc = entry.getValue();
             
-        	return new JsonObject().toString();
+        	return XmiToJsonConverter.toJson(modelIdentifier, xmiDoc);
         	
         } catch (Exception e) {
         	throw new RepositoryException(e);

@@ -298,8 +298,9 @@ public class ModelRepository {
             	throw new ResourceNotFound("[generateJsonModel] domain model Xmi document could not be found for identifier: " + modelIdentifier);
             
             String xmiDoc = entry.getValue();
-            
-        	return XmiToJsonConverter.toJson(modelIdentifier, xmiDoc);
+
+			int version = 1;
+        	return XmiToJsonConverter.toJson(modelIdentifier, version, xmiDoc);
         	
         } catch (Exception e) {
         	throw new RepositoryException(e);

@@ -37,7 +37,7 @@ public class XmiDomainModel {
 	@POST
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response addXmiModel(@PathParam("modelIdentifier") String modelIdentifier, String xmiModelDoc, @Context UriInfo uriInfo) {
+    public Response addModel(@PathParam("modelIdentifier") String modelIdentifier, String xmiModelDoc, @Context UriInfo uriInfo) {
 		
 		if(xmiModelDoc == null)
 			return Response.status(Response.Status.BAD_REQUEST).entity("xmiModelDoc is null").build();
@@ -45,9 +45,13 @@ public class XmiDomainModel {
 		if(xmiModelDoc.length() == 0)
 			return Response.status(Response.Status.NO_CONTENT).entity("xmiModelDoc is empty").build();
 		
+		if(modelIdentifier == null)
+			return Response.status(Response.Status.BAD_REQUEST).entity("modelIdentifier is null").build();
+		
+		String identifier = null;
 		try {
-			ModelRepository.getInstance().addXmiModel(modelIdentifier, xmiModelDoc);
-			URI modelUri = uriInfo.getAbsolutePathBuilder().build();
+			identifier = ModelRepository.getInstance().addXmiModel(modelIdentifier, xmiModelDoc);
+			URI modelUri = uriInfo.getBaseUriBuilder().path("modelrepo/xmi/" + identifier).build();
 			return Response.status(Response.Status.OK).entity(modelUri.toString()).build();
 		} catch (ResourceTypeUnknown e) {
 			LOG.error(e.getMessage(), e);
@@ -74,26 +78,6 @@ public class XmiDomainModel {
 		}	
 	}
 	
-	@PUT
-	@Consumes(MediaType.APPLICATION_XML)
-	@Produces(MediaType.TEXT_PLAIN)
-	public Response update(@PathParam("modelIdentifier") String modelIdentifier, String xmiModelDoc, @Context UriInfo uriInfo) {
-		try {
-			ModelRepository.getInstance().updateXmiModel(modelIdentifier, xmiModelDoc);
-			URI modelUri = uriInfo.getAbsolutePathBuilder().build();
-			return Response.status(Response.Status.OK).entity(modelUri.toString()).build();
-		} catch (ResourceNotFound e) {
-			LOG.error(e.getMessage(), e);
-			return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
-		} catch (ResourceTypeUnknown e) {
-			LOG.error(e.getMessage(), e);
-			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
-		} catch (Exception e) {
-			LOG.error(e.getMessage(), e);
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-		}
-	}
-	
 	@DELETE
 	@Consumes( MediaType.TEXT_PLAIN )
 	@Produces( MediaType.TEXT_PLAIN )
@@ -109,4 +93,25 @@ public class XmiDomainModel {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
 		}
 	}
+	
+//	@PUT
+//	@Consumes(MediaType.APPLICATION_XML)
+//	@Produces(MediaType.TEXT_PLAIN)
+//	public Response update(@PathParam("modelIdentifier") String modelIdentifier, String xmiModelDoc, @Context UriInfo uriInfo) {
+//		try {
+//			ModelRepository.getInstance().updateXmiModel(modelIdentifier, xmiModelDoc);
+//			URI modelUri = uriInfo.getAbsolutePathBuilder().build();
+//			return Response.status(Response.Status.OK).entity(modelUri.toString()).build();
+//		} catch (ResourceNotFound e) {
+//			LOG.error(e.getMessage(), e);
+//			return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+//		} catch (ResourceTypeUnknown e) {
+//			LOG.error(e.getMessage(), e);
+//			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+//		} catch (Exception e) {
+//			LOG.error(e.getMessage(), e);
+//			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+//		}
+//	}
+	
 }

@@ -4,12 +4,12 @@ import org.junit.Test;
 
 public class ContainerTest {
 	
-	//@Test
+	@Test
 	public void testContainer() throws Exception {
 		
 		MRApplication dm = new MRApplication();
 		
-		Thread.sleep(5000);
+		Thread.sleep(20000);
 		
     }
 

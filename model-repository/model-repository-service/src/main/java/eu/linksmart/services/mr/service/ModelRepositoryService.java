@@ -35,74 +35,24 @@ public class ModelRepositoryService {
         LOG.info("initialized model repository service");
     }
     
-    @POST
-	@Consumes(MediaType.APPLICATION_JSON)           
-	@Produces(MediaType.TEXT_PLAIN)
-	public Response add(String jsonModelDoc, @Context UriInfo uriInfo) {
-    	
-		if(jsonModelDoc == null)
-			return Response.status(Response.Status.BAD_REQUEST).entity("jsonModelDoc is null").build();
-		
-		if(jsonModelDoc.length() == 0)
-			return Response.status(Response.Status.NO_CONTENT).entity("jsonModelDoc is empty").build();
-		
-		String identifier = null;
-		try {
-			identifier = ModelRepository.getInstance().addModel(jsonModelDoc);
-			URI modelUri = uriInfo.getAbsolutePathBuilder().path("json/" + identifier).build();
-			return Response.status(Response.Status.OK).entity(modelUri.toString()).build();
-		} catch (ResourceTypeUnknown e) {
-			LOG.error(e.getMessage(), e);
-			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
-		} catch (ResourceInvalid e) {
-			LOG.error(e.getMessage(), e);
-			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
-		} catch (Exception e) {
-			LOG.error(e.getMessage(), e);
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-		}
-	}
-    
-    @PUT
-	@Consumes(MediaType.TEXT_PLAIN)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response generateJsonModel(String modelIdentifier) {
-    	
-		if(modelIdentifier == null)
-			return Response.status(Response.Status.BAD_REQUEST).entity("modelIdentifier is null").build();
-		
-		if(modelIdentifier.length() == 0)
-			return Response.status(Response.Status.NO_CONTENT).entity("modelIdentifier is empty").build();
-		
-		try {
-			String jsonModelDoc = ModelRepository.getInstance().generateJsonModel(modelIdentifier);
-			return Response.status(Response.Status.OK).entity(jsonModelDoc).build();
-		} catch (ResourceNotFound e) {
-			LOG.error(e.getMessage(), e);
-			return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
-		} catch (Exception e) {
-			LOG.error(e.getMessage(), e);
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-		}
-	}
-    
     @GET
-    @Path("list/json")
+    @Path("list/xmi/{modelName}")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response listJsonModels(@Context UriInfo uriInfo) {
+    public Response listXmiModels(@PathParam("modelName") String modelName, @Context UriInfo uriInfo) {
     	
     	try {
     		
-    		List<String> entries = ModelRepository.getInstance().listJson();
+    		List<String> entries = ModelRepository.getInstance().listXmi(modelName);
     		
-            MultivaluedMap<String, String> entryParams = new MultivaluedMapImpl();
-            
-            for (String entry : entries) {
-    			URI userUri = uriInfo.getAbsolutePathBuilder().path(entry).build();
-                entryParams.add("json", userUri.toString());
+    		MultivaluedMap<String, String> entryParams = new MultivaluedMapImpl();
+    		
+    		for (String entry : entries) {
+    			URI modelUri = uriInfo.getBaseUriBuilder().path("modelrepo/xmi/" + entry).build();
+                entryParams.add("xmi-" + modelName, modelUri.toString());
+                System.out.println("added: " + modelUri.toString());
     		}
-             
+            
             return Response.status(Response.Status.OK).entity(entryParams).build();
             
     	} catch( Exception e) {
@@ -135,4 +85,106 @@ public class ModelRepositoryService {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
     	} 
     }
+    
+    @GET
+    @Path("list/json/{modelName}")
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response listJsonModels(@PathParam("modelName") String modelName, @Context UriInfo uriInfo) {
+    	
+    	try {
+    		
+    		List<String> entries = ModelRepository.getInstance().listJson(modelName);
+    		
+            MultivaluedMap<String, String> entryParams = new MultivaluedMapImpl();
+            
+            for (String entry : entries) {
+    			URI userUri = uriInfo.getAbsolutePathBuilder().path(entry).build();
+                entryParams.add("json-" + modelName, userUri.toString());
+    		}
+             
+            return Response.status(Response.Status.OK).entity(entryParams).build();
+            
+    	} catch( Exception e) {
+    		LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+    	} 
+    }
+    
+    @GET
+    @Path("list/json")
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response listJsonModels(@Context UriInfo uriInfo) {
+    	
+    	try {
+    		
+    		List<String> entries = ModelRepository.getInstance().listJson();
+    		
+            MultivaluedMap<String, String> entryParams = new MultivaluedMapImpl();
+            
+            for (String entry : entries) {
+    			URI userUri = uriInfo.getAbsolutePathBuilder().path(entry).build();
+                entryParams.add("json", userUri.toString());
+    		}
+             
+            return Response.status(Response.Status.OK).entity(entryParams).build();
+            
+    	} catch( Exception e) {
+    		LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+    	} 
+    }
+    
+    @POST
+	@Consumes(MediaType.APPLICATION_JSON)           
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response addJsonDoc(String jsonModelDoc, @Context UriInfo uriInfo) {
+  	
+		if(jsonModelDoc == null)
+			return Response.status(Response.Status.BAD_REQUEST).entity("jsonModelDoc is null").build();
+		
+		if(jsonModelDoc.length() == 0)
+			return Response.status(Response.Status.NO_CONTENT).entity("jsonModelDoc is empty").build();
+		
+		String identifier = null;
+		try {
+			identifier = ModelRepository.getInstance().addModel(jsonModelDoc);
+			URI modelUri = uriInfo.getAbsolutePathBuilder().path("json/" + identifier).build();
+			return Response.status(Response.Status.OK).entity(modelUri.toString()).build();
+		} catch (ResourceTypeUnknown e) {
+			LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+		} catch (ResourceInvalid e) {
+			LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+		}
+	}
+     
+//    @PUT
+//	@Consumes(MediaType.TEXT_PLAIN)
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public Response generateJsonModel(String modelIdentifier) {
+//    	
+//		if(modelIdentifier == null)
+//			return Response.status(Response.Status.BAD_REQUEST).entity("modelIdentifier is null").build();
+//		
+//		if(modelIdentifier.length() == 0)
+//			return Response.status(Response.Status.NO_CONTENT).entity("modelIdentifier is empty").build();
+//		
+//		try {
+//			String jsonModelDoc = ModelRepository.getInstance().generateJsonModel(modelIdentifier);
+//			return Response.status(Response.Status.OK).entity(jsonModelDoc).build();
+//		} catch (ResourceNotFound e) {
+//			LOG.error(e.getMessage(), e);
+//			return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+//		} catch (Exception e) {
+//			LOG.error(e.getMessage(), e);
+//			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+//		}
+//	}
+    
 }

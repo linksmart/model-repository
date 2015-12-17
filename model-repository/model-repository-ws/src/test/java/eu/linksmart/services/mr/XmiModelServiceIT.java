@@ -3,6 +3,7 @@ package eu.linksmart.services.mr;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,28 +27,31 @@ public class XmiModelServiceIT extends AbstractIT {
     		
         	ModelRepositoryClient.initialize(URL);
         	
+        	String modelName = "sampleXmi";
+        	
         	String xmiModelString = new String(Files.readAllBytes(Paths.get(getClass().getResource("/model.xmi").toURI())), Charset.defaultCharset());
         	
-        	String modelURI = ModelRepositoryClient.addXmi("sample-xmi-id", xmiModelString);
+        	String modelURI = ModelRepositoryClient.addXmi(modelName, xmiModelString);
         	assertNotNull(modelURI);
         	LOG.info("URI: " + modelURI);
         	
-        	String xmiModel = ModelRepositoryClient.getXmi(modelURI);
-        	assertNotNull(xmiModel);
-        	//System.out.println("get-xmi: " + xmiModel);
+        	String modelURI2 = ModelRepositoryClient.addXmi(modelName, xmiModelString);
+        	assertNotNull(modelURI2);
+        	LOG.info("URI2: " + modelURI2);
         	
-        	String xmiModelUpdate = new String(Files.readAllBytes(Paths.get(getClass().getResource("/model.xmi").toURI())), Charset.defaultCharset());
+        	assertNotNull(ModelRepositoryClient.getXmi(modelURI));
         	
-        	String modelURIUpdated = ModelRepositoryClient.updateXmi(modelURI, xmiModelUpdate);
-        	assertNotNull(modelURIUpdated);
-        	LOG.info("URI-xmi-update: " + modelURIUpdated);
-        	
-        	String xmiModelUpdated = ModelRepositoryClient.getXmi(modelURIUpdated);
-        	assertNotNull(xmiModelUpdated);
+        	List<String> listXmiModel = ModelRepositoryClient.listXmiModels(modelName);
+        	assertNotNull(listXmiModel);
+        	LOG.info("listXmi-modelName [" + modelName + "] = " + listXmiModel.size());
         	        	
-        	String status = ModelRepositoryClient.deleteXmi(modelURIUpdated);
-        	assertNotNull(status);
-        	LOG.info("delete-xmi-status: " + status);
+        	assertNotNull(ModelRepositoryClient.deleteXmi(modelURI));
+        	
+        	assertNotNull(ModelRepositoryClient.deleteXmi(modelURI2));
+        	
+        	List<String> listXmiFinal = ModelRepositoryClient.listXmiModels();
+        	assertNotNull(listXmiFinal);
+        	LOG.info("listXmi: " + listXmiFinal.size());
             
         } catch (Exception e) {
         	LOG.error(e.getMessage());

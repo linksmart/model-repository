@@ -8,6 +8,8 @@ import java.nio.file.Paths;
 
 import org.junit.Test;
 
+import static org.junit.Assert.*;
+
 import eu.linksmart.services.mr.exceptions.RepositoryException;
 import eu.linksmart.services.mr.exceptions.ResourceInvalid;
 import eu.linksmart.services.mr.exceptions.ResourceNotFound;
@@ -24,19 +26,22 @@ public class XmiPersistenceTest {
 			String xmiModelDoc = new String(encoded, Charset.defaultCharset());
 			
 			String identifier = ModelRepository.getInstance().addXmiModel("sample", xmiModelDoc);
-		
-			System.out.println("get xmi: " + ModelRepository.getInstance().getXmiModel(identifier));
+			assertNotNull(ModelRepository.getInstance().getXmiModel(identifier));
+			
+			String identifier2 = ModelRepository.getInstance().addXmiModel("sample", xmiModelDoc);
+			assertNotNull(ModelRepository.getInstance().getXmiModel(identifier2));
 			
 			String xmiModelUpdate = new String(Files.readAllBytes(Paths.get(getClass().getResource("/model.xmi").toURI())), Charset.defaultCharset());
 			
-			String identifierUpdate = ModelRepository.getInstance().updateXmiModel(identifier, xmiModelUpdate);
+			ModelRepository.getInstance().updateXmiModel(identifier, xmiModelUpdate);
+			assertNotNull(ModelRepository.getInstance().getXmiModel(identifier));
 			
-			System.out.println("get-xmi-updated: " + ModelRepository.getInstance().getXmiModel(identifierUpdate));
+			System.out.println("list-xmi-model: " + ModelRepository.getInstance().listXmi("sample").size());
 			
-			System.out.println("list-xmi: " + ModelRepository.getInstance().listXmi().size());
+			ModelRepository.getInstance().deleteXmiModel(identifier);
+			System.out.println("list-xmi-model: " + ModelRepository.getInstance().listXmi("sample").size());
 			
-			ModelRepository.getInstance().deleteXmiModel(identifierUpdate);
-			
+			ModelRepository.getInstance().deleteXmiModel(identifier2);
 			System.out.println("list-xmi: " + ModelRepository.getInstance().listXmi().size());
 			
 		} catch (ResourceTypeUnknown | ResourceInvalid | RepositoryException | ResourceNotFound e) {

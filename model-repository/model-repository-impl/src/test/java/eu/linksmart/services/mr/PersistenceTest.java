@@ -30,18 +30,17 @@ public class PersistenceTest {
 			String jsonModelDoc = new String(encoded, Charset.defaultCharset());
 			
 			String identifier = ModelRepository.getInstance().addModel(jsonModelDoc);
+			assertNotNull(ModelRepository.getInstance().getModel(identifier));
 		
-			System.out.println("get: " + ModelRepository.getInstance().getModel(identifier));
-			
 			String jsonModelUpdate = new String(Files.readAllBytes(Paths.get(getClass().getResource("/model_update.json").toURI())), Charset.defaultCharset());
+			assertNotNull(ModelRepository.getInstance().updateModel(identifier, jsonModelUpdate));
+			assertNotNull(ModelRepository.getInstance().getModel(identifier));
 			
-			String identifierUpdate = ModelRepository.getInstance().updateModel(identifier, jsonModelUpdate);
-			
-			System.out.println("get-updated: " + ModelRepository.getInstance().getModel(identifierUpdate));
+			System.out.println("list-json: " + ModelRepository.getInstance().listJson("sample").size());
+
+			ModelRepository.getInstance().deleteModel(identifier);
 			
 			System.out.println("list-json: " + ModelRepository.getInstance().listJson().size());
-			
-			ModelRepository.getInstance().deleteModel(identifierUpdate);
 			
 		} catch (ResourceTypeUnknown | ResourceInvalid | RepositoryException | ResourceNotFound e) {
 			e.printStackTrace();
@@ -70,7 +69,7 @@ public class PersistenceTest {
 		try {
 			ModelRepository.getInstance().deleteModel(identifier);
 		} catch (RepositoryException | ResourceNotFound e) {
-			fail("not deleteing xmi document");
+			fail("not deleteing json document");
 		}
 	}
 	

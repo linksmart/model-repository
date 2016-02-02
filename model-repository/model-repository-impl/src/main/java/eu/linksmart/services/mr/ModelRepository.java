@@ -331,7 +331,7 @@ public class ModelRepository {
             
             String xmiDoc = entry.getValue();
             
-        	return XmiToJsonConverter.toJson(modelIdentifier, xmiDoc);
+        	return XmiToJsonConverter.toJson(modelIdentifier, 1, xmiDoc);
         	
         } catch (Exception e) {
         	throw new RepositoryException(e);
@@ -377,27 +377,4 @@ public class ModelRepository {
         	throw new RepositoryException(e);
         }
 	}
-	
-<<<<<<< HEAD
-	public String generateJsonModel(String modelIdentifier) throws ResourceNotFound, RepositoryException {
-		
-		try {
-			
-			StorageEntryXmi entry = storage.getXmi(modelIdentifier);
-            
-            if (entry == null)
-            	throw new ResourceNotFound("[generateJsonModel] domain model Xmi document could not be found for identifier: " + modelIdentifier);
-            
-            String xmiDoc = entry.getValue();
-
-			int version = 1;
-        	return XmiToJsonConverter.toJson(modelIdentifier, version, xmiDoc);
-        	
-        } catch (Exception e) {
-        	throw new RepositoryException(e);
-        }
-	}
-	
-=======
->>>>>>> interface change, Identifier combine with version impl
 }

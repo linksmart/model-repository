@@ -11,13 +11,21 @@ import javax.persistence.Table;
 * @author hrasheed
 */
 @Entity
-@Table(name="ENTRYSXMI")
+@Table(name="StorageEntryXmi")
 public class StorageEntryXmi {
 
 	@Id
-    @Column(name="ID", nullable=false, unique=true, updatable=false)
+    @Column(name="key", nullable=false, unique=true, updatable=false)
     @Basic(optional=false)
     private String key;
+	
+	@Column(name="name", nullable=false, unique=false, updatable=false)
+    @Basic(optional=false)
+    private String name;
+	
+	@Column(name="version", nullable=false, unique=false, updatable=false)
+    @Basic(optional=false)
+    private int version;
 
     @Column(name="XML_TEXT", length=64000)
     @Basic(optional=false)
@@ -26,8 +34,10 @@ public class StorageEntryXmi {
     public StorageEntryXmi() {
     }
 
-    public StorageEntryXmi(String key, String xmlText) {
+    public StorageEntryXmi(String key, String name, int version, String xmlText) {
         this.key = key;
+        this.name = name;
+        this.version = version;
         this.value = xmlText;
     }
 
@@ -37,6 +47,22 @@ public class StorageEntryXmi {
 
     public void setKey(String key) {
         this.key = key;
+    }
+    
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 
     public String getValue() {

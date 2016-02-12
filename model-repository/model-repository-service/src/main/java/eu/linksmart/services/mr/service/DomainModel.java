@@ -5,6 +5,7 @@ import java.net.URI;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -26,12 +27,41 @@ import eu.linksmart.services.mr.exceptions.ResourceTypeUnknown;
  * @author hrasheed
  * 
  */
-@Path("/modelrepo/json/{modelIdentifier}")
+@Path("/mr/json/{modelIdentifier}")
 public class DomainModel {
 	
 	private final Logger LOG = LoggerFactory.getLogger(DomainModel.class);
 	
+	protected static final String PATH = "mr/json/";
+	
 	public DomainModel() {
+	}
+	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)           
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response addJsonDoc(@PathParam("modelIdentifier") String modelIdentifier, String jsonModelDoc, @Context UriInfo uriInfo) {
+  	
+		if(jsonModelDoc == null)
+			return Response.status(Response.Status.BAD_REQUEST).entity("jsonModelDoc is null").build();
+		
+		if(jsonModelDoc.length() == 0)
+			return Response.status(Response.Status.NO_CONTENT).entity("jsonModelDoc is empty").build();
+		
+		try {
+			modelIdentifier = ModelRepository.getInstance().addJsonModel(modelIdentifier, jsonModelDoc);
+			URI modelUri = uriInfo.getBaseUriBuilder().path(PATH + modelIdentifier).build();
+			return Response.status(Response.Status.OK).entity(modelUri.toString()).build();
+		} catch (ResourceTypeUnknown e) {
+			LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+		} catch (ResourceInvalid e) {
+			LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+		}
 	}
 	
 	@GET
@@ -39,7 +69,7 @@ public class DomainModel {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response get(@PathParam("modelIdentifier") String modelIdentifier) {
 		try {
-			String modelJson = ModelRepository.getInstance().getModel(modelIdentifier);
+			String modelJson = ModelRepository.getInstance().getJsonModel(modelIdentifier);
 			return Response.status(Response.Status.OK).entity(modelJson).build();
 		} catch (ResourceNotFound e) {
 			LOG.error(e.getMessage(), e);
@@ -55,7 +85,7 @@ public class DomainModel {
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response update(@PathParam("modelIdentifier") String modelIdentifier, String jsonModelDoc, @Context UriInfo uriInfo) {
 		try {
-			ModelRepository.getInstance().updateModel(modelIdentifier, jsonModelDoc);
+			ModelRepository.getInstance().updateJsonModel(modelIdentifier, jsonModelDoc);
 			URI modelUri = uriInfo.getAbsolutePathBuilder().build();
 			return Response.status(Response.Status.OK).entity(modelUri.toString()).build();
 		} catch (ResourceNotFound e) {
@@ -72,13 +102,13 @@ public class DomainModel {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
 		}
 	}
-	
+		
 	@DELETE
 	@Consumes( MediaType.TEXT_PLAIN )
 	@Produces( MediaType.TEXT_PLAIN )
 	public Response delete(@PathParam("modelIdentifier") String modelIdentifier) {
 		try {
-			boolean status = ModelRepository.getInstance().deleteModel(modelIdentifier);
+			boolean status = ModelRepository.getInstance().deleteJsonModel(modelIdentifier);
 			return Response.status(Response.Status.OK).entity(Boolean.toString(status)).build();
 		} catch (ResourceNotFound e) {
 			LOG.error(e.getMessage(), e);

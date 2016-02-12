@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 import eu.linksmart.services.mr.ModelRepository;
+import eu.linksmart.services.mr.exceptions.RepositoryException;
 import eu.linksmart.services.mr.exceptions.ResourceInvalid;
 import eu.linksmart.services.mr.exceptions.ResourceNotFound;
 import eu.linksmart.services.mr.exceptions.ResourceTypeUnknown;
@@ -26,31 +27,115 @@ import javax.xml.bind.annotation.XmlRootElement;
  * 
  */
 @XmlRootElement
-@Path("/modelrepo")
+@Path("/mr")
 public class ModelRepositoryService {
 
     private final Logger LOG = LoggerFactory.getLogger(ModelRepositoryService.class);
     
+    protected static final String XMI_PATH = "mr/xmi/";
+    
+    protected static final String JSON_PATH = "mr/json/";
+    
     public ModelRepositoryService() {
-        LOG.info("initialized model repository service");
+        LOG.debug("initialized model repository service");
+    }
+    
+    @POST
+    @Path("{modelName}")
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response addXmiModel(@PathParam("modelName") String modelName, String xmiModelDoc, @Context UriInfo uriInfo) {
+		
+		if(xmiModelDoc == null)
+			return Response.status(Response.Status.BAD_REQUEST).entity("xmiModelDoc is null").build();
+		
+		if(xmiModelDoc.length() == 0)
+			return Response.status(Response.Status.NO_CONTENT).entity("xmiModelDoc is empty").build();
+		
+		if(modelName == null)
+			return Response.status(Response.Status.BAD_REQUEST).entity("modelName is null").build();
+		
+		String modelIdentifier = null;
+		try {
+			modelIdentifier = ModelRepository.getInstance().addXmiModel(modelName, xmiModelDoc);
+			URI modelUri = uriInfo.getBaseUriBuilder().path(XMI_PATH + modelIdentifier).build();
+			return Response.status(Response.Status.OK).entity(modelUri.toString()).build();
+		} catch (RepositoryException e) {
+			LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+		}
     }
     
     @GET
-    @Path("list/xmi/{modelName}")
+    @Path("{modelIdentifier}")
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getXmiModelJson(@PathParam("modelIdentifier") String modelIdentifier) {
+    	if(modelIdentifier == null)
+			return Response.status(Response.Status.BAD_REQUEST).entity("modelIdentifier is null").build();
+    	if(modelIdentifier.length() == 0)
+			return Response.status(Response.Status.NO_CONTENT).entity("modelIdentifier is empty").build();
+    	try {
+			String modelJson = ModelRepository.getInstance().getXmiModelJson(modelIdentifier);
+			return Response.status(Response.Status.OK).entity(modelJson).build();
+		} catch (ResourceNotFound e) {
+			LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+		}	
+    }
+    
+    @GET
+    @Path("latest/xmi/{modelName}")
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_XML)
+    public Response getLatestXmiModel(@PathParam("modelName") String modelName) {
+    	try {
+    		String modelXmi = ModelRepository.getInstance().getLatestXmi(modelName);
+    		return Response.status(Response.Status.OK).entity(modelXmi).build();    
+    	} catch (ResourceNotFound e) {
+			LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+		}	
+    }
+    
+    @GET
+    @Path("latest/json/{modelName}")
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getLatestJsonModel(@PathParam("modelName") String modelName) {
+    	try {
+    		String modelJson = ModelRepository.getInstance().getLatestXmiJson(modelName);
+    		return Response.status(Response.Status.OK).entity(modelJson).build();    
+    	} catch (ResourceNotFound e) {
+			LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+		}	
+    }
+    
+    @GET
+    @Path("list/xmi")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response listXmiModels(@PathParam("modelName") String modelName, @Context UriInfo uriInfo) {
+    public Response listXmiModels(@Context UriInfo uriInfo) {
     	
     	try {
     		
-    		List<String> entries = ModelRepository.getInstance().listXmi(modelName);
-    		
+    		List<String> identifiers = ModelRepository.getInstance().listXmi();
+    	
     		MultivaluedMap<String, String> entryParams = new MultivaluedMapImpl();
     		
-    		for (String entry : entries) {
-    			URI modelUri = uriInfo.getBaseUriBuilder().path("modelrepo/xmi/" + entry).build();
-                entryParams.add("xmi-" + modelName, modelUri.toString());
-                System.out.println("added: " + modelUri.toString());
+    		for (String identifier : identifiers) {
+    			URI modelUri = uriInfo.getBaseUriBuilder().path(XMI_PATH + identifier).build();
+                entryParams.add(identifier, modelUri.toString());
     		}
             
             return Response.status(Response.Status.OK).entity(entryParams).build();
@@ -62,20 +147,45 @@ public class ModelRepositoryService {
     }
     
     @GET
-    @Path("list/xmi")
+    @Path("list/xmi/{modelName}")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response listXmiModels(@Context UriInfo uriInfo) {
+    public Response listXmiModels(@PathParam("modelName") String modelName, @Context UriInfo uriInfo) {
     	
     	try {
     		
-    		List<String> entries = ModelRepository.getInstance().listXmi();
+    		List<String> identifiers = ModelRepository.getInstance().listXmi(modelName);
     		
     		MultivaluedMap<String, String> entryParams = new MultivaluedMapImpl();
     		
-    		for (String entry : entries) {
-    			URI userUri = uriInfo.getAbsolutePathBuilder().path(entry).build();
-                entryParams.add("xmi", userUri.toString());
+    		for (String identifier : identifiers) {
+    			URI modelUri = uriInfo.getBaseUriBuilder().path(XMI_PATH + identifier).build();
+                entryParams.add(identifier, modelUri.toString());
+    		}
+    		
+            return Response.status(Response.Status.OK).entity(entryParams).build();
+            
+    	} catch( Exception e) {
+    		LOG.error(e.getMessage(), e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+    	} 
+    }
+    
+    @GET
+    @Path("list/json")
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response listJsonModels(@Context UriInfo uriInfo) {
+    	
+    	try {
+    		
+    		List<String> identifiers = ModelRepository.getInstance().listJson();
+    		
+            MultivaluedMap<String, String> entryParams = new MultivaluedMapImpl();
+            
+            for (String identifier : identifiers) {
+    			URI userUri = uriInfo.getBaseUriBuilder().path(JSON_PATH + identifier).build();
+                entryParams.add(identifier, userUri.toString());
     		}
             
             return Response.status(Response.Status.OK).entity(entryParams).build();
@@ -94,97 +204,20 @@ public class ModelRepositoryService {
     	
     	try {
     		
-    		List<String> entries = ModelRepository.getInstance().listJson(modelName);
+    		List<String> identifiers = ModelRepository.getInstance().listJson(modelName);
     		
             MultivaluedMap<String, String> entryParams = new MultivaluedMapImpl();
             
-            for (String entry : entries) {
-    			URI userUri = uriInfo.getAbsolutePathBuilder().path(entry).build();
-                entryParams.add("json-" + modelName, userUri.toString());
+            for (String identifier : identifiers) {
+    			URI userUri = uriInfo.getBaseUriBuilder().path(JSON_PATH + identifier).build();
+                entryParams.add(identifier, userUri.toString());
     		}
-             
+            
             return Response.status(Response.Status.OK).entity(entryParams).build();
             
     	} catch( Exception e) {
     		LOG.error(e.getMessage(), e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
     	} 
-    }
-    
-    @GET
-    @Path("list/json")
-    @Consumes(MediaType.TEXT_PLAIN)
-    @Produces(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response listJsonModels(@Context UriInfo uriInfo) {
-    	
-    	try {
-    		
-    		List<String> entries = ModelRepository.getInstance().listJson();
-    		
-            MultivaluedMap<String, String> entryParams = new MultivaluedMapImpl();
-            
-            for (String entry : entries) {
-    			URI userUri = uriInfo.getAbsolutePathBuilder().path(entry).build();
-                entryParams.add("json", userUri.toString());
-    		}
-             
-            return Response.status(Response.Status.OK).entity(entryParams).build();
-            
-    	} catch( Exception e) {
-    		LOG.error(e.getMessage(), e);
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-    	} 
-    }
-    
-    @POST
-	@Consumes(MediaType.APPLICATION_JSON)           
-	@Produces(MediaType.TEXT_PLAIN)
-	public Response addJsonDoc(String jsonModelDoc, @Context UriInfo uriInfo) {
-  	
-		if(jsonModelDoc == null)
-			return Response.status(Response.Status.BAD_REQUEST).entity("jsonModelDoc is null").build();
-		
-		if(jsonModelDoc.length() == 0)
-			return Response.status(Response.Status.NO_CONTENT).entity("jsonModelDoc is empty").build();
-		
-		String identifier = null;
-		try {
-			identifier = ModelRepository.getInstance().addModel(jsonModelDoc);
-			URI modelUri = uriInfo.getAbsolutePathBuilder().path("json/" + identifier).build();
-			return Response.status(Response.Status.OK).entity(modelUri.toString()).build();
-		} catch (ResourceTypeUnknown e) {
-			LOG.error(e.getMessage(), e);
-			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
-		} catch (ResourceInvalid e) {
-			LOG.error(e.getMessage(), e);
-			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
-		} catch (Exception e) {
-			LOG.error(e.getMessage(), e);
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-		}
-	}
-     
-//    @PUT
-//	@Consumes(MediaType.TEXT_PLAIN)
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public Response generateJsonModel(String modelIdentifier) {
-//    	
-//		if(modelIdentifier == null)
-//			return Response.status(Response.Status.BAD_REQUEST).entity("modelIdentifier is null").build();
-//		
-//		if(modelIdentifier.length() == 0)
-//			return Response.status(Response.Status.NO_CONTENT).entity("modelIdentifier is empty").build();
-//		
-//		try {
-//			String jsonModelDoc = ModelRepository.getInstance().generateJsonModel(modelIdentifier);
-//			return Response.status(Response.Status.OK).entity(jsonModelDoc).build();
-//		} catch (ResourceNotFound e) {
-//			LOG.error(e.getMessage(), e);
-//			return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
-//		} catch (Exception e) {
-//			LOG.error(e.getMessage(), e);
-//			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-//		}
-//	}
-    
+    }    
 }

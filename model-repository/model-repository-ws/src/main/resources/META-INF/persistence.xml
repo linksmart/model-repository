@@ -3,9 +3,10 @@
              
 <persistence-unit name="resourcemanager_hsqldb_file" transaction-type="RESOURCE_LOCAL">
 	<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-		<class>eu.linksmart.services.mr.storage.DBStorageEntry</class>
-		<class>eu.linksmart.services.mr.storage.StorageEntryXmi</class>
 		<class>eu.linksmart.services.mr.storage.CounterEntry</class>
+		<class>eu.linksmart.services.mr.storage.StorageEntryXmi</class>
+		<class>eu.linksmart.services.mr.storage.DBStorageEntry</class>
+		<class>eu.linksmart.services.mr.storage.StorageEntryJson</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="OFF" />
 			<property name="eclipselink.jdbc.password" value="" />
@@ -37,9 +38,10 @@
 
 <persistence-unit name="resourcemanager_postgres_production" transaction-type="RESOURCE_LOCAL">
 	<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-		<class>eu.linksmart.services.mr.storage.DBStorageEntry</class>
-		<class>eu.linksmart.services.mr.storage.StorageEntryXmi</class>
 		<class>eu.linksmart.services.mr.storage.CounterEntry</class>
+		<class>eu.linksmart.services.mr.storage.StorageEntryXmi</class>
+		<class>eu.linksmart.services.mr.storage.DBStorageEntry</class>
+		<class>eu.linksmart.services.mr.storage.StorageEntryJson</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="OFF" />
 			<property name="eclipselink.jdbc.password" value="model_repository" />
@@ -71,9 +73,10 @@
 
 <persistence-unit name="resourcemanager_hsqldb_memory"	transaction-type="RESOURCE_LOCAL">
 	<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-	<class>eu.linksmart.services.mr.storage.DBStorageEntry</class>
-	<class>eu.linksmart.services.mr.storage.StorageEntryXmi</class>
 	<class>eu.linksmart.services.mr.storage.CounterEntry</class>
+	<class>eu.linksmart.services.mr.storage.StorageEntryXmi</class>
+	<class>eu.linksmart.services.mr.storage.DBStorageEntry</class>
+	<class>eu.linksmart.services.mr.storage.StorageEntryJson</class>
 	<properties>
 		<property name="eclipselink.logging.level" value="OFF" />
 		<property name="eclipselink.jdbc.password" value="" />

@@ -27,18 +27,18 @@ public class DBStorageEntry {
     @Basic(optional=false)
     private int version;
 
-    @Column(name="XML_TEXT", length=64000)
+    @Column(name="value", length=64000)
     @Basic(optional=false)
     private String value;
 
     public DBStorageEntry() {
     }
 
-    public DBStorageEntry(String key, String name, int version, String xmlText) {
+    public DBStorageEntry(String key, String name, int version, String jsonText) {
         this.key = key;
         this.name = name;
         this.version = version;
-        this.value = xmlText;
+        this.value = jsonText;
     }
 
     public String getKey() {
@@ -69,7 +69,7 @@ public class DBStorageEntry {
         return value;
     }
 
-    public void setValue(String xmlText) {
-        this.value = xmlText;
+    public void setValue(String jsonText) {
+        this.value = jsonText;
     }
 }

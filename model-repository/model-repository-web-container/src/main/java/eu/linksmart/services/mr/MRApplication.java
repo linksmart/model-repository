@@ -51,10 +51,11 @@ public class MRApplication {
 		LOG.info("------------------------------------------------------------------------------------");
 		LOG.info("shutting down the model repository");
 		LOG.info("------------------------------------------------------------------------------------");
+		//ModelRepository.getInstance().closePersistence();
 		container.stopContainer();
 		container.interrupt();
 		try { Thread.sleep(1000); } catch (InterruptedException e) { }
-		LOG.info("model repository terminated successfully");
+		LOG.info("model repository server terminated");
 		Runtime.getRuntime().runFinalization();
 		System.exit(0);
 		//Runtime.getRuntime().halt(0); // this method should be used very carefully since it doesn't gracefully shutdown the virtual machine

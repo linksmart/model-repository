@@ -3,7 +3,6 @@ package eu.linksmart.services.mr;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,26 +32,30 @@ public class XmiModelServiceIT extends AbstractIT {
         	
         	String modelURI = ModelRepositoryClient.addXmi(modelName, xmiModelString);
         	assertNotNull(modelURI);
-        	LOG.info("URI: " + modelURI);
+        	LOG.info("URI-1: " + modelURI);
         	
         	String modelURI2 = ModelRepositoryClient.addXmi(modelName, xmiModelString);
         	assertNotNull(modelURI2);
-        	LOG.info("URI2: " + modelURI2);
+        	LOG.info("URI-2: " + modelURI2);
         	
-        	assertNotNull(ModelRepositoryClient.getXmi(modelURI));
+        	assertEquals(xmiModelString, ModelRepositoryClient.getXmi(modelURI));
         	
-        	List<String> listXmiModel = ModelRepositoryClient.listXmiModels(modelName);
-        	assertNotNull(listXmiModel);
-        	LOG.info("listXmi-modelName [" + modelName + "] = " + listXmiModel.size());
-        	        	
+        	String modelIdentifier1 = modelName + ":" + 1;
+        	//assertNotNull(ModelRepositoryClient.getXmiJson(modelIdentifier1));
+        	
+        	String modelIdentifier2 = modelName + ":" + 2;
+        	//assertEquals(ModelRepositoryClient.getLatestJsonModel(modelName), ModelRepositoryClient.getXmiJson(modelIdentifier2));
+        	
+        	assertEquals(modelURI, ModelRepositoryClient.updateXmi(modelURI, xmiModelString));
+        	
+        	assertEquals(xmiModelString, ModelRepositoryClient.getXmi(modelURI));
+        	
         	assertNotNull(ModelRepositoryClient.deleteXmi(modelURI));
         	
         	assertNotNull(ModelRepositoryClient.deleteXmi(modelURI2));
         	
-        	List<String> listXmiFinal = ModelRepositoryClient.listXmiModels();
-        	assertNotNull(listXmiFinal);
-        	LOG.info("listXmi: " + listXmiFinal.size());
-            
+        	LOG.info("testXmi successfully completed");
+        	
         } catch (Exception e) {
         	LOG.error(e.getMessage());
         	fail("testXmi failed: " + e.getMessage());

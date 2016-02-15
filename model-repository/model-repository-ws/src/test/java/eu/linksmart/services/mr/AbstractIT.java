@@ -11,7 +11,7 @@ public abstract class AbstractIT extends TestCase {
 
     final Logger LOG = LoggerFactory.getLogger(AbstractIT.class);
     
-    public final String URL = "http://localhost:9090/model-repository/mr";
+    public final String URL = "http://localhost:9090/repo/mr";
 	
     @Override
     protected void setUp() {

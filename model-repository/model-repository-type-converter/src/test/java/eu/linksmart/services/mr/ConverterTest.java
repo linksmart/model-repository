@@ -26,7 +26,7 @@ public class ConverterTest {
 
 
 	@Test
-	public void testConvert() throws IOException, URISyntaxException {
+	public void testConvert() throws Exception {
 
 		byte[] encoded = Files.readAllBytes(Paths.get(getClass().getResource("/model.xmi").toURI()));
 		String jsonModelDoc = new String(encoded, Charset.defaultCharset());

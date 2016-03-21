@@ -28,7 +28,7 @@ public class XmiModelServiceIT extends AbstractIT {
         	
         	String modelName = "sampleXmi";
         	
-        	String xmiModelString = new String(Files.readAllBytes(Paths.get(getClass().getResource("/model.xmi").toURI())), Charset.defaultCharset());
+        	String xmiModelString = new String(Files.readAllBytes(Paths.get(getClass().getResource("/simple_deployment.xmi").toURI())), Charset.defaultCharset());
         	
         	String modelURI = ModelRepositoryClient.addXmi(modelName, xmiModelString);
         	assertNotNull(modelURI);
@@ -40,11 +40,17 @@ public class XmiModelServiceIT extends AbstractIT {
         	
         	assertEquals(xmiModelString, ModelRepositoryClient.getXmi(modelURI));
         	
+        	//
+        	// if it runs standalone then postfix is correct, otherwise when running with other unit tests then
+        	// version number could be different, hence assertion would fail
+        	//
         	String modelIdentifier1 = modelName + ":" + 1;
-        	//assertNotNull(ModelRepositoryClient.getXmiJson(modelIdentifier1));
+        	String jsonModel = ModelRepositoryClient.getXmiJson(modelIdentifier1);
+        	System.out.println("json:" + jsonModel);
+        	assertNotNull(jsonModel);
         	
         	String modelIdentifier2 = modelName + ":" + 2;
-        	//assertEquals(ModelRepositoryClient.getLatestJsonModel(modelName), ModelRepositoryClient.getXmiJson(modelIdentifier2));
+        	assertEquals(ModelRepositoryClient.getLatestJsonModel(modelName), ModelRepositoryClient.getXmiJson(modelIdentifier2));
         	
         	assertEquals(modelURI, ModelRepositoryClient.updateXmi(modelURI, xmiModelString));
         	

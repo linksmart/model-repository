@@ -15,7 +15,7 @@
 	
 	<properties>
 		<servlet-container-port>9090</servlet-container-port>
-        <deployed.war.context>model-repository</deployed.war.context>
+        <deployed.war.context>repo</deployed.war.context>
 	</properties>
 	
 	<dependencies>

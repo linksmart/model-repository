@@ -29,6 +29,61 @@ public class ModelRepositoryServiceIT extends AbstractIT {
     	super.tearDown();
     }
     
+    public void testXmiList() throws Exception {
+    	try {
+    		
+    		ModelRepositoryClient.initialize(URL);
+    		
+    		String modelName = "sampleXmi";
+    		
+			String xmiModelString = new String(Files.readAllBytes(Paths.get(getClass().getResource("/model.xmi").toURI())), Charset.defaultCharset());
+			
+			String modelURI = ModelRepositoryClient.addXmi(modelName, xmiModelString);
+        	assertNotNull(modelURI);
+        	LOG.info("URI-1: " + modelURI);
+        	
+			String modelURI2 = ModelRepositoryClient.addXmi(modelName, xmiModelString);
+        	assertNotNull(modelURI2);
+        	LOG.info("URI-2: " + modelURI2);
+        	
+        	MultivaluedMap<String, String> listXmi = ModelRepositoryClient.listXmiModels();
+        	assertNotNull(listXmi);
+        	assertEquals(2, listXmi.size());
+        	LOG.info("listXmi - expecting 2 entries: " + listXmi.size());
+        	for (Entry<String, List<String>> entry : listXmi.entrySet()) {
+        		LOG.info("[listXmi] " + entry.getKey() + " - " + entry.getValue().get(0));
+            }
+        	
+        	MultivaluedMap<String, String> listXmiModel = ModelRepositoryClient.listXmiModels(modelName);
+        	assertNotNull(listXmiModel);
+        	assertEquals(2, listXmiModel.size());
+        	LOG.info("listXmi-modelName [" + modelName + "] = expecting 2 entries: " + listXmiModel.size());
+        	for (Entry<String, List<String>> entry : listXmiModel.entrySet()) {
+        		LOG.info("[listXmi-modelName] " + entry.getKey() + " - " + entry.getValue().get(0));
+            }
+        	
+        	assertEquals(ModelRepositoryClient.getXmi(modelURI2), ModelRepositoryClient.getLatestXmiModel(modelName));
+        	
+        	assertNotNull(ModelRepositoryClient.deleteXmi(modelURI));
+        	
+        	assertNotNull(ModelRepositoryClient.deleteXmi(modelURI2));
+        	
+        	MultivaluedMap<String, String> listXmiModelFinal = ModelRepositoryClient.listXmiModels(modelName);
+        	assertNotNull(listXmiModelFinal);
+        	assertEquals(0, listXmiModelFinal.size());
+        	
+        	MultivaluedMap<String, String> listXmiFinal = ModelRepositoryClient.listXmiModels();
+        	assertNotNull(listXmiFinal);
+        	assertEquals(0, listXmiFinal.size());
+        	
+        	LOG.info("testXmiList successfully completed");
+        	
+        } catch (Exception e) {
+        	LOG.error(e.getMessage());
+        	fail("testXmiList failed: " + e.getMessage());
+		}
+    }
+    
     public void testJsonList() throws Exception {
     	try {
     		
@@ -86,60 +141,4 @@ public class ModelRepositoryServiceIT extends AbstractIT {
         	fail("testJsonList failed: " + e.getMessage());
 		}
     }
-    
-    public void testXmiList() throws Exception {
-    	try {
-    		
-    		ModelRepositoryClient.initialize(URL);
-    		
-    		String modelName = "sampleXmi";
-    		
-			String xmiModelString = new String(Files.readAllBytes(Paths.get(getClass().getResource("/model.xmi").toURI())), Charset.defaultCharset());
-			
-			String modelURI = ModelRepositoryClient.addXmi(modelName, xmiModelString);
-        	assertNotNull(modelURI);
-        	LOG.info("URI-1: " + modelURI);
-        	
-			String modelURI2 = ModelRepositoryClient.addXmi(modelName, xmiModelString);
-        	assertNotNull(modelURI2);
-        	LOG.info("URI-2: " + modelURI2);
-        	
-        	MultivaluedMap<String, String> listXmi = ModelRepositoryClient.listXmiModels();
-        	assertNotNull(listXmi);
-        	assertEquals(2, listXmi.size());
-        	LOG.info("listXmi - expecting 2 entries: " + listXmi.size());
-        	for (Entry<String, List<String>> entry : listXmi.entrySet()) {
-        		LOG.info("[listXmi] " + entry.getKey() + " - " + entry.getValue().get(0));
-            }
-        	
-        	MultivaluedMap<String, String> listXmiModel = ModelRepositoryClient.listXmiModels(modelName);
-        	assertNotNull(listXmiModel);
-        	assertEquals(2, listXmiModel.size());
-        	LOG.info("listXmi-modelName [" + modelName + "] = expecting 2 entries: " + listXmiModel.size());
-        	for (Entry<String, List<String>> entry : listXmiModel.entrySet()) {
-        		LOG.info("[listXmi-modelName] " + entry.getKey() + " - " + entry.getValue().get(0));
-            }
-        	
-        	assertEquals(ModelRepositoryClient.getXmi(modelURI2), ModelRepositoryClient.getLatestXmiModel(modelName));
-        	
-        	assertNotNull(ModelRepositoryClient.deleteXmi(modelURI));
-        	
-        	assertNotNull(ModelRepositoryClient.deleteXmi(modelURI2));
-        	
-        	MultivaluedMap<String, String> listXmiModelFinal = ModelRepositoryClient.listXmiModels(modelName);
-        	assertNotNull(listXmiModelFinal);
-        	assertEquals(0, listXmiModelFinal.size());
-        	
-        	MultivaluedMap<String, String> listXmiFinal = ModelRepositoryClient.listXmiModels();
-        	assertNotNull(listXmiFinal);
-        	assertEquals(0, listXmiFinal.size());
-        	
-        	LOG.info("testXmiList successfully completed");
-        	
-        } catch (Exception e) {
-        	LOG.error(e.getMessage());
-        	fail("testXmiList failed: " + e.getMessage());
-		}
-    }
-    
 }

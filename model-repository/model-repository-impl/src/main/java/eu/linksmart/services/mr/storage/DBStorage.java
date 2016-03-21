@@ -46,6 +46,7 @@ public class DBStorage {
     public void close() {
     	if(emf != null) {
     		emf.close();
+    		LOG.info("persistence engine is terminated");
     	}
     }
     
@@ -98,7 +99,7 @@ public class DBStorage {
         	
         try {
             em.getTransaction().begin();
-            CounterEntry update = em.find(CounterEntry.class, entry.getIdentifier());
+            CounterEntry update = em.find(CounterEntry.class, entry.getModelName());
             update.setCounter(entry.getCounter());
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -113,7 +114,7 @@ public class DBStorage {
     // XMI document
     //
     @SuppressWarnings("finally")
-	public boolean addXmi(StorageEntryXmi entry) {
+	public boolean addXmi(StorageEntryXmi xmiEntry, DBStorageEntry jsonEntry) {
     	
         boolean result = true;
         
@@ -121,7 +122,8 @@ public class DBStorage {
         
         try {
             em.getTransaction().begin();
-            em.persist(entry);
+            em.persist(xmiEntry);
+            em.persist(jsonEntry);
             em.getTransaction().commit();
         } catch (Exception e) {
         	e.printStackTrace();
@@ -151,15 +153,35 @@ public class DBStorage {
     }
     
     @SuppressWarnings("finally")
-	public boolean updateXmi(StorageEntryXmi entry) {
+	public DBStorageEntry getXmiJson(String resourceKey) {
+    	
+    	DBStorageEntry result = null;
+    	EntityManager em = emf.createEntityManager();
+    	
+    	try {
+            em.getTransaction().begin();
+            result = (DBStorageEntry) em.find(DBStorageEntry.class, resourceKey);
+            em.getTransaction().commit();
+    	} catch (Exception e) {
+    		result = null;
+        } finally {
+            em.close();
+            return result;
+        }
+    }
+    
+    @SuppressWarnings("finally")
+	public boolean updateXmi(StorageEntryXmi xmiEntry, DBStorageEntry jsonEntry) {
     	
         boolean result = true;
         EntityManager em = emf.createEntityManager();
 
         try {
             em.getTransaction().begin();
-            StorageEntryXmi update = em.find(StorageEntryXmi.class, entry.getKey());
-            update.setValue(entry.getValue());
+            StorageEntryXmi updateXmi = em.find(StorageEntryXmi.class, xmiEntry.getKey());
+            updateXmi.setValue(xmiEntry.getValue());
+            DBStorageEntry updateJson = em.find(DBStorageEntry.class, jsonEntry.getKey());
+            updateJson.setValue(jsonEntry.getValue());
             em.getTransaction().commit();
         } catch (Exception e) {
             result = false;
@@ -176,12 +198,15 @@ public class DBStorage {
     	EntityManager em = emf.createEntityManager();
     	
     	try {
-            String jpql = "delete from StorageEntryXmi se where se.key=\"" + resourceKey + "\"";
+            String xmiJpql = "delete from StorageEntryXmi se where se.key=\"" + resourceKey + "\"";
+            String jsonJpql = "delete from DBStorageEntry se where se.key=\"" + resourceKey + "\"";
             em.getTransaction().begin();
-            Query query = em.createQuery(jpql);
-            int row = query.executeUpdate();
+            Query xmiQuery = em.createQuery(xmiJpql);
+            int xmiRow = xmiQuery.executeUpdate();
+            Query jsonQuery = em.createQuery(jsonJpql);
+            int jsonRow = jsonQuery.executeUpdate();
             em.getTransaction().commit();
-            if (row == 0) {
+            if (xmiRow == 0 || jsonRow == 0) {
             	result = false;
             } 
     	} catch (Exception e) {
@@ -189,6 +214,26 @@ public class DBStorage {
         } finally {
             em.close();
             return result;
+        }
+    }
+    
+    @SuppressWarnings("finally")
+	public List<StorageEntryXmi> listXmi() {
+    	
+    	List<StorageEntryXmi> queryList = null;
+    	EntityManager em = emf.createEntityManager();
+    	
+    	try {
+    		em.getTransaction().begin();
+            String jpql = "select se from StorageEntryXmi se";
+            Query query = em.createQuery(jpql);
+            queryList = query.getResultList();
+            em.getTransaction().commit();
+    	} catch (Exception e) {
+    		queryList = null;
+        } finally {
+            em.close();
+            return queryList;
         }
     }
     
@@ -213,14 +258,34 @@ public class DBStorage {
     }
     
     @SuppressWarnings("finally")
-	public List<StorageEntryXmi> listXmi() {
+	public List<DBStorageEntry> listXmiJson() {
     	
-    	List<StorageEntryXmi> queryList = null;
+    	List<DBStorageEntry> queryList = null;
     	EntityManager em = emf.createEntityManager();
     	
     	try {
     		em.getTransaction().begin();
-            String jpql = "select se from StorageEntryXmi se";
+            String jpql = "select se from DBStorageEntry se";
+            Query query = em.createQuery(jpql);
+            queryList = query.getResultList();
+            em.getTransaction().commit();
+    	} catch (Exception e) {
+    		queryList = null;
+        } finally {
+            em.close();
+            return queryList;
+        }
+    }
+    
+    @SuppressWarnings("finally")
+	public List<DBStorageEntry> listXmiJson(String modelName) {
+    	
+    	List<DBStorageEntry> queryList = null;
+    	EntityManager em = emf.createEntityManager();
+    	
+    	try {
+    		em.getTransaction().begin();
+            String jpql = "select se from DBStorageEntry se where se.name=\"" + modelName + "\"";
             Query query = em.createQuery(jpql);
             queryList = query.getResultList();
             em.getTransaction().commit();
@@ -232,8 +297,11 @@ public class DBStorage {
         }
     }
 
+    //
+    // Json Documents
+    //
     @SuppressWarnings("finally")
-	public boolean add(DBStorageEntry entry) {
+	public boolean addJson(StorageEntryJson entry) {
     	
         boolean result = true;
         
@@ -242,7 +310,7 @@ public class DBStorage {
         //
     	// check if resource with same identifier already exist
     	//
-        DBStorageEntry exist = em.find(DBStorageEntry.class, entry.getKey());
+        StorageEntryJson exist = em.find(StorageEntryJson.class, entry.getKey());
         	
     	if(exist != null) {
     		em.close();
@@ -262,14 +330,14 @@ public class DBStorage {
     }
     
     @SuppressWarnings("finally")
-	public boolean update(DBStorageEntry entry) {
+	public boolean updateJson(StorageEntryJson entry) {
     	
         boolean result = true;
         EntityManager em = emf.createEntityManager();
 
         try {
             em.getTransaction().begin();
-            DBStorageEntry update = em.find(DBStorageEntry.class, entry.getKey());
+            StorageEntryJson update = em.find(StorageEntryJson.class, entry.getKey());
             update.setValue(entry.getValue());
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -281,14 +349,14 @@ public class DBStorage {
     }
 
     @SuppressWarnings("finally")
-	public DBStorageEntry get(String resourceKey) {
+	public StorageEntryJson getJson(String resourceKey) {
     	
-    	DBStorageEntry result = null;
+    	StorageEntryJson result = null;
     	EntityManager em = emf.createEntityManager();
     	
     	try {
             em.getTransaction().begin();
-            result = (DBStorageEntry) em.find(DBStorageEntry.class, resourceKey);
+            result = (StorageEntryJson) em.find(StorageEntryJson.class, resourceKey);
             em.getTransaction().commit();
     	} catch (Exception e) {
     		result = null;
@@ -299,13 +367,13 @@ public class DBStorage {
     }
 
     @SuppressWarnings("finally")
-	public boolean delete(String resourceKey) {
+	public boolean deleteJson(String resourceKey) {
     	
     	boolean result = true;
     	EntityManager em = emf.createEntityManager();
     	
     	try {
-            String jpql = "delete from DBStorageEntry se where se.key=\"" + resourceKey + "\"";
+            String jpql = "delete from StorageEntryJson se where se.key=\"" + resourceKey + "\"";
             em.getTransaction().begin();
             Query query = em.createQuery(jpql);
             int row = query.executeUpdate();
@@ -322,34 +390,14 @@ public class DBStorage {
     }
     
     @SuppressWarnings("finally")
-	public List<DBStorageEntry> listJson(String modelName) {
+	public List<StorageEntryJson> listJson() {
     	
-    	List<DBStorageEntry> queryList = null;
+    	List<StorageEntryJson> queryList = null;
     	EntityManager em = emf.createEntityManager();
     	
     	try {
     		em.getTransaction().begin();
-            String jpql = "select se from DBStorageEntry se where se.name=\"" + modelName + "\"";
-            Query query = em.createQuery(jpql);
-            queryList = query.getResultList();
-            em.getTransaction().commit();
-    	} catch (Exception e) {
-    		queryList = null;
-        } finally {
-            em.close();
-            return queryList;
-        }
-    }
-
-    @SuppressWarnings("finally")
-	public List<DBStorageEntry> listJson() {
-    	
-    	List<DBStorageEntry> queryList = null;
-    	EntityManager em = emf.createEntityManager();
-    	
-    	try {
-    		em.getTransaction().begin();
-            String jpql = "select se from DBStorageEntry se";
+            String jpql = "select se from StorageEntryJson se";
             Query query = em.createQuery(jpql);
             queryList = query.getResultList();
             em.getTransaction().commit();
@@ -361,4 +409,23 @@ public class DBStorage {
         }
     }
     
+    @SuppressWarnings("finally")
+	public List<StorageEntryJson> listJson(String modelName) {
+    	
+    	List<StorageEntryJson> queryList = null;
+    	EntityManager em = emf.createEntityManager();
+    	
+    	try {
+    		em.getTransaction().begin();
+            String jpql = "select se from StorageEntryJson se where se.name=\"" + modelName + "\"";
+            Query query = em.createQuery(jpql);
+            queryList = query.getResultList();
+            em.getTransaction().commit();
+    	} catch (Exception e) {
+    		queryList = null;
+        } finally {
+            em.close();
+            return queryList;
+        }
+    }
 }

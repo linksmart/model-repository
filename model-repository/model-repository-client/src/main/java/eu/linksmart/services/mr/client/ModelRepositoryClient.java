@@ -1,9 +1,5 @@
 package eu.linksmart.services.mr.client;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.log4j.Logger;
@@ -20,7 +16,7 @@ public class ModelRepositoryClient {
 	
 	private static final Logger LOG = Logger.getLogger(ModelRepositoryClient.class);
 	
-	private static String BASE_URL = "http://localhost:9090/";
+	private static String BASE_URL = "http://localhost:9090";
 	
     public ModelRepositoryClient() {
     }
@@ -37,7 +33,7 @@ public class ModelRepositoryClient {
     	try {
     	
     		Client client = Client.create();
-            WebResource webResourceClient = client.resource(BASE_URL + "/xmi/" + modelName);
+            WebResource webResourceClient = client.resource(BASE_URL + "/" + modelName);
 
             String outcome = webResourceClient.type("application/xml; charset=utf-8").accept("text/plain; charset=utf-8").post(String.class, xmiModelDoc);
             
@@ -57,6 +53,23 @@ public class ModelRepositoryClient {
             WebResource webResourceClient = client.resource(modelURI);
 
             String outcome = webResourceClient.type("text/plain; charset=utf-8").accept("application/xml; charset=utf-8").get(String.class);
+            
+            return outcome;
+            
+        } catch (Exception e) {
+			LOG.error(e);
+			return null;
+		}	
+    }
+    
+    public static String getXmiJson(String modelIdentifier) {
+    	
+    	try {
+    	
+    		Client client = Client.create();
+            WebResource webResourceClient = client.resource(BASE_URL + "/" + modelIdentifier);
+
+            String outcome = webResourceClient.type("text/plain; charset=utf-8").accept("application/json; charset=utf-8").get(String.class);
             
             return outcome;
             
@@ -100,7 +113,27 @@ public class ModelRepositoryClient {
 		}	
     }
     
-    public static List<String> listXmiModels(String modelName) {
+    public static MultivaluedMap<String, String> listXmiModels() {
+    	
+    	try {
+    	
+    		Client client = Client.create();
+            WebResource webResourceClient = client.resource(BASE_URL + "/" + "list/xmi");
+            
+            ClientResponse response = webResourceClient.type("text/plain; charset=utf-8").accept("application/x-www-form-urlencoded; charset=utf-8").get(ClientResponse.class);
+    		
+            MultivaluedMap<String, String> entries = response.getEntity(MultivaluedMap.class);
+			         
+    		return entries;
+    		
+        } catch (Exception e) {
+        	e.printStackTrace();
+			LOG.error(e);
+			return null;
+		}	
+    }
+    
+    public static MultivaluedMap<String, String> listXmiModels(String modelName) {
     	
     	try {
     	
@@ -111,14 +144,7 @@ public class ModelRepositoryClient {
     		
             MultivaluedMap<String, String> entries = response.getEntity(MultivaluedMap.class);
 			
-            ArrayList<String> list = new ArrayList<String>();
-            
-            for (int i = 0; i < entries.size(); i++) {
-				String model = entries.get("xmi-" + modelName).get(i);
-				list.add(model);
-			}
-            
-    		return list;
+    		return entries;
     		
         } catch (Exception e) {
 			LOG.error(e);
@@ -126,25 +152,33 @@ public class ModelRepositoryClient {
 		}	
     }
     
-    public static List<String> listXmiModels() {
+    public static String getLatestXmiModel(String modelName) {
     	
     	try {
     	
     		Client client = Client.create();
-            WebResource webResourceClient = client.resource(BASE_URL + "/" + "list/xmi");
+            WebResource webResourceClient = client.resource(BASE_URL + "/" + "latest/xmi/" + modelName);
             
-            ClientResponse response = webResourceClient.type("text/plain; charset=utf-8").accept("application/x-www-form-urlencoded; charset=utf-8").get(ClientResponse.class);
+            String outcome = webResourceClient.type("text/plain; charset=utf-8").accept("application/xml; charset=utf-8").get(String.class);
     		
-            MultivaluedMap<String, String> entries = response.getEntity(MultivaluedMap.class);
-			
-            ArrayList<String> list = new ArrayList<String>();
+    		return outcome;
+    		
+        } catch (Exception e) {
+			LOG.error(e);
+			return null;
+		}	
+    }
+    
+    public static String getLatestJsonModel(String modelName) {
+    	
+    	try {
+    	
+    		Client client = Client.create();
+            WebResource webResourceClient = client.resource(BASE_URL + "/" + "latest/json/" + modelName);
             
-            for (int i = 0; i < entries.size(); i++) {
-				String model = entries.get("xmi").get(i);
-				list.add(model);
-			}
-            
-    		return list;
+            String outcome = webResourceClient.type("text/plain; charset=utf-8").accept("application/json; charset=utf-8").get(String.class);
+    		
+    		return outcome;
     		
         } catch (Exception e) {
 			LOG.error(e);
@@ -155,12 +189,12 @@ public class ModelRepositoryClient {
     //
     // Json model
     //
-    public static String add(String jsonModelDoc) {
+    public static String addJson(String modelIdentifier, String jsonModelDoc) {
     	
     	try {
     	
     		Client client = Client.create();
-            WebResource webResourceClient = client.resource(BASE_URL);
+            WebResource webResourceClient = client.resource(BASE_URL + "/json/" + modelIdentifier);
 
             String outcome = webResourceClient.type("application/json; charset=utf-8").accept("text/plain; charset=utf-8").post(String.class, jsonModelDoc);
             
@@ -172,7 +206,7 @@ public class ModelRepositoryClient {
 		}	
     }
     
-    public static String get(String modelURI) {
+    public static String getJson(String modelURI) {
     	
     	try {
     	
@@ -189,7 +223,7 @@ public class ModelRepositoryClient {
 		}	
     }
     
-    public static String update(String modelURI, String jsonModelDoc) {
+    public static String updateJson(String modelURI, String jsonModelDoc) {
     	
     	try {
     	
@@ -206,7 +240,7 @@ public class ModelRepositoryClient {
 		}	
     }
     
-    public static String delete(String modelURI) {
+    public static String deleteJson(String modelURI) {
     	
     	try {
     	
@@ -223,7 +257,26 @@ public class ModelRepositoryClient {
 		}	
     }
     
-    public static List<String> listJsonModels(String modelName) {
+    public static MultivaluedMap<String, String> listJsonModels() {
+    	
+    	try {
+    	
+    		Client client = Client.create();
+            WebResource webResourceClient = client.resource(BASE_URL + "/" + "list/json");
+            
+            ClientResponse response = webResourceClient.type("text/plain; charset=utf-8").accept("application/x-www-form-urlencoded; charset=utf-8").get(ClientResponse.class);
+    		
+            MultivaluedMap<String, String> entries = response.getEntity(MultivaluedMap.class);
+            
+    		return entries;
+    		
+        } catch (Exception e) {
+			LOG.error(e);
+			return null;
+		}	
+    }
+    
+    public static MultivaluedMap<String, String> listJsonModels(String modelName) {
     	
     	try {
     	
@@ -234,45 +287,11 @@ public class ModelRepositoryClient {
     		
             MultivaluedMap<String, String> entries = response.getEntity(MultivaluedMap.class);
 			
-            ArrayList<String> list = new ArrayList<String>();
-            
-            for (int i = 0; i < entries.size(); i++) {
-				String model = entries.get("json-" + modelName).get(i);
-				list.add(model);
-			}
-			
-    		return list;
+    		return entries;
     		
         } catch (Exception e) {
 			LOG.error(e);
 			return null;
 		}	
     }
-    
-    public static List<String> listJsonModels() {
-    	
-    	try {
-    	
-    		Client client = Client.create();
-            WebResource webResourceClient = client.resource(BASE_URL + "/" + "list/json");
-            
-            ClientResponse response = webResourceClient.type("text/plain; charset=utf-8").accept("application/x-www-form-urlencoded; charset=utf-8").get(ClientResponse.class);
-    		
-            MultivaluedMap<String, String> entries = response.getEntity(MultivaluedMap.class);
-			
-            ArrayList<String> list = new ArrayList<String>();
-            
-            for (int i = 0; i < entries.size(); i++) {
-				String model = entries.get("json").get(i);
-				list.add(model);
-			}
-			
-    		return list;
-    		
-        } catch (Exception e) {
-			LOG.error(e);
-			return null;
-		}	
-    }
-   
 }

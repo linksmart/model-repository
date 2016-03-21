@@ -1,7 +1,5 @@
 package eu.linksmart.services.mr;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -22,33 +20,36 @@ public class PersistenceTest {
 	}
 	
 	@Test
-	public void testStorage() throws IOException, URISyntaxException {
+	public void testJsonPersistence() throws Exception {
 		
 		try {
 			
 			byte[] encoded = Files.readAllBytes(Paths.get(getClass().getResource("/model.json").toURI()));
 			String jsonModelDoc = new String(encoded, Charset.defaultCharset());
 			
-			String identifier = ModelRepository.getInstance().addModel(jsonModelDoc);
-			assertNotNull(ModelRepository.getInstance().getModel(identifier));
+			String identifier = ModelRepository.getInstance().addJsonModel("e3:123", jsonModelDoc);
+			
+			assertNotNull(ModelRepository.getInstance().getJsonModel(identifier));
 		
 			String jsonModelUpdate = new String(Files.readAllBytes(Paths.get(getClass().getResource("/model_update.json").toURI())), Charset.defaultCharset());
-			assertNotNull(ModelRepository.getInstance().updateModel(identifier, jsonModelUpdate));
-			assertNotNull(ModelRepository.getInstance().getModel(identifier));
+			
+			assertNotNull(ModelRepository.getInstance().updateJsonModel(identifier, jsonModelUpdate));
+			
+			assertNotNull(ModelRepository.getInstance().getJsonModel(identifier));
 			
 			System.out.println("list-json: " + ModelRepository.getInstance().listJson("sample").size());
 
-			ModelRepository.getInstance().deleteModel(identifier);
+			ModelRepository.getInstance().deleteJsonModel(identifier);
 			
 			System.out.println("list-json: " + ModelRepository.getInstance().listJson().size());
 			
 		} catch (ResourceTypeUnknown | ResourceInvalid | RepositoryException | ResourceNotFound e) {
-			e.printStackTrace();
+			fail("testJsonPersistence failed: " + e.getMessage());
 		}	
 	}
 	
 	@Test
-	public void testDoubleAdd() throws IOException, URISyntaxException {
+	public void testDoubleAdd() throws Exception {
 		
 		String identifier = null;
 		try {
@@ -56,10 +57,10 @@ public class PersistenceTest {
 			byte[] encoded = Files.readAllBytes(Paths.get(getClass().getResource("/model.json").toURI()));
 			String jsonModelDoc = new String(encoded, Charset.defaultCharset());
 			
-			identifier = ModelRepository.getInstance().addModel(jsonModelDoc);
+			identifier = ModelRepository.getInstance().addJsonModel("e3:123", jsonModelDoc);
 			
 			// should fail
-			ModelRepository.getInstance().addModel(jsonModelDoc);
+			ModelRepository.getInstance().addJsonModel("e3:123", jsonModelDoc);
 			
 		} catch (ResourceTypeUnknown | ResourceInvalid | RepositoryException e) {
 			assertSame(RepositoryException.class, e.getClass());
@@ -67,8 +68,8 @@ public class PersistenceTest {
 		}
 		
 		try {
-			ModelRepository.getInstance().deleteModel(identifier);
-		} catch (RepositoryException | ResourceNotFound e) {
+			ModelRepository.getInstance().deleteJsonModel(identifier);
+		} catch (Exception e) {
 			fail("not deleteing json document");
 		}
 	}

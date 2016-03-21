@@ -32,6 +32,11 @@
     		<groupId>eu.linksmart.services.mr</groupId>
     		<artifactId>model-repository-service</artifactId>
     		<scope>test</scope>
+		</dependency>
+		<dependency>
+    		<groupId>eu.linksmart.services.mr</groupId>
+    		<artifactId>model-repository-impl</artifactId>
+    		<scope>test</scope>
 		</dependency>		
     </dependencies>
 

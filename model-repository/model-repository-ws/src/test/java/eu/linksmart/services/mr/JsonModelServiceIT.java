@@ -28,28 +28,22 @@ public class JsonModelServiceIT extends AbstractIT {
         	
         	String jsonModelString = new String(Files.readAllBytes(Paths.get(getClass().getResource("/model.json").toURI())), Charset.defaultCharset());
         	
-        	String modelURI = ModelRepositoryClient.add(jsonModelString);
+        	String modelURI = ModelRepositoryClient.addJson("e3:123", jsonModelString);
         	assertNotNull(modelURI);
-        	LOG.info("URI: " + modelURI);
+        	LOG.info("Json-URI: " + modelURI);
         	
-        	String jsonModel = ModelRepositoryClient.get(modelURI);
-        	assertNotNull(jsonModel);
-        	LOG.info("get: " + jsonModel);
+        	assertEquals(jsonModelString, ModelRepositoryClient.getJson(modelURI));
         	
         	String jsonModelUpdate = new String(Files.readAllBytes(Paths.get(getClass().getResource("/model_update.json").toURI())), Charset.defaultCharset());
         	
-        	String modelURIUpdated = ModelRepositoryClient.update(modelURI, jsonModelUpdate);
-        	assertNotNull(modelURIUpdated);
-        	LOG.info("URI-update: " + modelURIUpdated);
+        	assertEquals(modelURI, ModelRepositoryClient.updateJson(modelURI, jsonModelUpdate));
         	
-        	String jsonModelUpdated = ModelRepositoryClient.get(modelURIUpdated);
-        	assertNotNull(jsonModelUpdated);
-        	LOG.info("get-update: " + jsonModelUpdated);
+        	assertEquals(jsonModelUpdate, ModelRepositoryClient.getJson(modelURI));
         	
-        	String status = ModelRepositoryClient.delete(modelURIUpdated);
-        	assertNotNull(status);
-        	LOG.info("delete-status: " + status);
-            
+        	assertNotNull(ModelRepositoryClient.deleteJson(modelURI));
+        	
+        	LOG.info("testJson successfully completed");
+        	
         } catch (Exception e) {
         	LOG.error(e.getMessage());
         	fail("testJson failed: " + e.getMessage());

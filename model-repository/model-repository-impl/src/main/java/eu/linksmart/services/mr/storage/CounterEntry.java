@@ -17,7 +17,7 @@ public class CounterEntry {
 	@Id
     @Column(name="ID", nullable=false, unique=true, updatable=false)
     @Basic(optional=false)
-    private String identifier;
+    private String modelName;
 	
 	@Column(name="COUNTER", nullable=false, unique=false, updatable=true)
     @Basic(optional=false)
@@ -26,17 +26,17 @@ public class CounterEntry {
     public CounterEntry() {
     }
 
-    public CounterEntry(String identifier, int counter) {
-        this.identifier = identifier;
+    public CounterEntry(String modelName, int counter) {
+        this.modelName = modelName;
         this.counter = counter;
     }
 
-    public String getIdentifier() {
-        return identifier;
+    public String getModelName() {
+        return modelName;
     }
 
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
     }
 
     public int getCounter() {

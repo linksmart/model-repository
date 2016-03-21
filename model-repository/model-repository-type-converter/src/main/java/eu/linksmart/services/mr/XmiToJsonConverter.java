@@ -1,6 +1,5 @@
 package eu.linksmart.services.mr;
 
-import com.google.gson.JsonObject;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -14,7 +13,7 @@ public class XmiToJsonConverter {
 
 	private static final Logger LOG = Logger.getLogger(XmiToJsonConverter.class);
 
-	public static String toJson(String modelIdentifier, Integer modelVersion, String xmiDoc) {
+	public static String toJson(String modelIdentifier, Integer modelVersion, String xmiDoc) throws Exception {
 
 		UMLModel model = new UMLModel();
 		model.setName( modelIdentifier);

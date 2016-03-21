@@ -14,6 +14,9 @@ INSTALL
   	
 Depending on OS either call "start.sh" or "start.bat" to start the client.
 
+There is a configuration file called "model-repository.properties" to configure parameters like host name, port and base URL path
+dbstorage.properties is used to configure storage backend for the service
+
 COPYING / LICENSE 	see LICENSE for details
 
 BUGS

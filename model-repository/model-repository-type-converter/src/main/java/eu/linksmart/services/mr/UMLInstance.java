@@ -62,9 +62,9 @@ public class UMLInstance {
                 ls_attributes.put("meta", new JSONObject( ls_attrValues.get( ATTR_NAME_META)));
             if (ls_attrValues.containsKey( ATTR_NAME_REPRESENTATION))
                 ls_attributes.put("representation", new JSONObject( ls_attrValues.get( ATTR_NAME_REPRESENTATION)));
-            if (ls_attrValues.containsKey( ATTR_NAME_PROTOCOL_EXT))
-                ls_attributes.put("int_protocol", new JSONObject( ls_attrValues.get( ATTR_NAME_PROTOCOL_INT)));
             if (ls_attrValues.containsKey( ATTR_NAME_PROTOCOL_INT))
+                ls_attributes.put("int_protocol", new JSONObject( ls_attrValues.get( ATTR_NAME_PROTOCOL_INT)));
+            if (ls_attrValues.containsKey( ATTR_NAME_PROTOCOL_EXT))
                 ls_attributes.put("ext_protocol", new JSONObject( ls_attrValues.get( ATTR_NAME_PROTOCOL_EXT)));
         }
         out.put("ls_attributes", ls_attributes);

@@ -30,7 +30,8 @@ public class UMLInstance {
 
     private final static String ATTR_NAME_META = "ls_meta";
     private final static String ATTR_NAME_TTL = "ls_ttl";
-    private final static String ATTR_NAME_PROTOCOL = "ls_protocol";
+    private final static String ATTR_NAME_PROTOCOL_EXT = "ls_ext_protocol";
+    private final static String ATTR_NAME_PROTOCOL_INT = "ls_int_protocol";
     private final static String ATTR_NAME_DESCRIPTION = "ls_description";
     private final static String ATTR_NAME_REPRESENTATION = "ls_representation";
 
@@ -54,15 +55,17 @@ public class UMLInstance {
         if( type.getStereotypeName().equalsIgnoreCase(UMLModel.STEREOTYPE_DEVICE_NAME)) {
             ls_attributes.put("description", ls_attrValues.get( ATTR_NAME_DESCRIPTION));
             if (ls_attrValues.containsKey( ATTR_NAME_META))
-                ls_attributes.put("meta",  new JSONObject( ls_attrValues.get( ATTR_NAME_META)));
+                ls_attributes.put("meta", new JSONObject( ls_attrValues.get( ATTR_NAME_META)));
             ls_attributes.put("ttl", Integer.parseInt(ls_attrValues.get( ATTR_NAME_TTL)));
         } else {  //UMLModel.STEREOTYPE_RESOURCE_NAME
             if (ls_attrValues.containsKey(ATTR_NAME_META))
                 ls_attributes.put("meta", new JSONObject( ls_attrValues.get( ATTR_NAME_META)));
             if (ls_attrValues.containsKey( ATTR_NAME_REPRESENTATION))
                 ls_attributes.put("representation", new JSONObject( ls_attrValues.get( ATTR_NAME_REPRESENTATION)));
-            if (ls_attrValues.containsKey( ATTR_NAME_PROTOCOL))
-                ls_attributes.put("protocol", new JSONObject( ls_attrValues.get( ATTR_NAME_PROTOCOL)));
+            if (ls_attrValues.containsKey( ATTR_NAME_PROTOCOL_EXT))
+                ls_attributes.put("int_protocol", new JSONObject( ls_attrValues.get( ATTR_NAME_PROTOCOL_INT)));
+            if (ls_attrValues.containsKey( ATTR_NAME_PROTOCOL_INT))
+                ls_attributes.put("ext_protocol", new JSONObject( ls_attrValues.get( ATTR_NAME_PROTOCOL_EXT)));
         }
         out.put("ls_attributes", ls_attributes);
 

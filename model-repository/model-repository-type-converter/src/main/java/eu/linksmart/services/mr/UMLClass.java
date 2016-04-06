@@ -20,7 +20,7 @@ public class UMLClass {
     public String className;
     public String stereotypeID;
     public Map<String, String> attributes = new HashMap<String, String>();
-//    public UMLClass parent = null; //inheritance, not used currently
+    public UMLClass parent = null; //inheritance, not used currently
 
     public UMLClass(Node node, UMLModel model){
         this.umlModel = model;
@@ -47,6 +47,11 @@ public class UMLClass {
 //					<qualityScore value="-1"/>
 //				</xmi:Extension>
 //			</ownedAttribute>
+//        <generalization general="V8bwCsqECGlEBR.9" xmi:id="q6bwCsqECGlEBSD9" xmi:type="uml:Generalization">
+//          <xmi:Extension extender="Visual Paradigm">
+//              <qualityScore value="-1"/>
+//          </xmi:Extension>
+//        </generalization>
 //		</ownedMember>
 
         if (node instanceof Element) {
@@ -63,6 +68,14 @@ public class UMLClass {
             LOG.trace("UMLClass    className: " + className);
             LOG.trace("UMLClass stereotypeID: " + stereotypeID);
 
+            // Parent
+            nList = element.getElementsByTagName("generalization");
+            if (  nList.getLength() > 0){
+                Node nNode = nList.item(0); // multiple inheritance is not supported
+                String parentClassID = ((Element)nNode).getAttribute( "general");
+                parent = umlModel.umlClasses.get( parentClassID);
+            }
+
             // Attributes
             nList = element.getElementsByTagName("ownedAttribute");
             for (int item = 0; item < nList.getLength(); item++) {
@@ -73,7 +86,6 @@ public class UMLClass {
                 LOG.trace("UMLClass   attribute[" + item + "]: " + attrName);
                 LOG.trace("UMLClass attributeID[" + item + "]: " + attrID);
             }
-
         }
     }
 
@@ -96,5 +108,11 @@ public class UMLClass {
     public String getStereotypeName(){
         return umlModel.getStereotypeName( stereotypeID);
     }
+
+    public String getAttributeName( String attrID) {
+        if( attributes.containsKey( attrID))
+            return attributes.get( attrID);
+        else
+            return parent.getAttributeName( attrID);
 }
 

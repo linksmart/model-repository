@@ -132,7 +132,7 @@ public class UMLInstance {
             for (int item = 0; item < nList.getLength(); item++) {
                 Node nNode = nList.item(item);
                 String attrID = ((Element)nNode).getAttribute( "definingFeature");
-                String attrName = type.attributes.get( attrID);
+                String attrName = type.getAttributeName( attrID);
 
                 //value
                 String attrValue = null;

@@ -110,9 +110,10 @@ public class UMLClass {
     }
 
     public String getAttributeName( String attrID) {
-        if( attributes.containsKey( attrID))
-            return attributes.get( attrID);
+        if (attributes.containsKey(attrID))
+            return attributes.get(attrID);
         else
-            return parent.getAttributeName( attrID);
+            return parent.getAttributeName(attrID);
+    }
 }
 

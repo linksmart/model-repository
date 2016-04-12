@@ -177,9 +177,10 @@ public class UMLModel {
         for (UMLLink link : umlLinks.values()){
             UMLInstance fromInstance = umlInstances.get( link.fromInstanceID);
             UMLInstance toInstance = umlInstances.get( link.toInstanceID);
-            // a link should from Device to Resource
+            // a link should be from a Device to a Resource or a Device
             if ( fromInstance.getStereotypeName().equals( STEREOTYPE_DEVICE_NAME)
-                    && toInstance.getStereotypeName().equals( STEREOTYPE_RESOURCE_NAME)){
+                    && ( toInstance.getStereotypeName().equals( STEREOTYPE_RESOURCE_NAME)
+                        ||  toInstance.getStereotypeName().equals( STEREOTYPE_DEVICE_NAME))){
                 toInstance.upperInstance = fromInstance;
                 fromInstance.descendingInstances.add(toInstance);
             } else if ( fromInstance.getStereotypeName().equals( STEREOTYPE_RESOURCE_NAME)

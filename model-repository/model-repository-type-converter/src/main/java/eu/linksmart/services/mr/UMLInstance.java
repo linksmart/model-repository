@@ -63,9 +63,9 @@ public class UMLInstance {
             if (ls_attrValues.containsKey( ATTR_NAME_REPRESENTATION))
                 ls_attributes.put("representation", new JSONObject( ls_attrValues.get( ATTR_NAME_REPRESENTATION)));
             if (ls_attrValues.containsKey( ATTR_NAME_PROTOCOL_INT))
-                ls_attributes.put("int_protocol", new JSONObject( ls_attrValues.get( ATTR_NAME_PROTOCOL_INT)));
+                ls_attributes.put("int_protocol", new JSONObject( completeProtocol( ls_attrValues.get(ATTR_NAME_PROTOCOL_INT))));
             if (ls_attrValues.containsKey( ATTR_NAME_PROTOCOL_EXT))
-                ls_attributes.put("ext_protocol", new JSONObject( ls_attrValues.get( ATTR_NAME_PROTOCOL_EXT)));
+                ls_attributes.put("ext_protocol", new JSONObject( completeProtocol(ls_attrValues.get(ATTR_NAME_PROTOCOL_EXT))));
         }
         out.put("ls_attributes", ls_attributes);
 
@@ -162,5 +162,13 @@ public class UMLInstance {
 
     public String getStereotypeName(){
         return type.getStereotypeName();
+    }
+
+    private String completeProtocol( String jsonString){
+        String trimmed = jsonString.trim();
+        if ( trimmed.startsWith( "{") || trimmed.startsWith("["))
+            return trimmed;
+        else
+            return ("{ "+ trimmed + "}");
     }
 }

@@ -2,7 +2,8 @@ package eu.linksmart.services.mr.client;
 
 import javax.ws.rs.core.MultivaluedMap;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -14,7 +15,7 @@ import com.sun.jersey.api.client.WebResource;
  */
 public class ModelRepositoryClient {
 	
-	private static final Logger LOG = Logger.getLogger(ModelRepositoryClient.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ModelRepositoryClient.class);
 	
 	private static String BASE_URL = "http://localhost:9090";
 	
@@ -40,7 +41,7 @@ public class ModelRepositoryClient {
             return outcome;
             
         } catch (Exception e) {
-			LOG.error(e);
+			LOG.error(e.getMessage());
 			return null;
 		}	
     }
@@ -57,7 +58,7 @@ public class ModelRepositoryClient {
             return outcome;
             
         } catch (Exception e) {
-			LOG.error(e);
+			LOG.error(e.getMessage());
 			return null;
 		}	
     }
@@ -74,7 +75,7 @@ public class ModelRepositoryClient {
             return outcome;
             
         } catch (Exception e) {
-			LOG.error(e);
+			LOG.error(e.getMessage());
 			return null;
 		}	
     }
@@ -91,7 +92,7 @@ public class ModelRepositoryClient {
             return outcome;
             
         } catch (Exception e) {
-			LOG.error(e);
+			LOG.error(e.getMessage());
 			return null;
 		}	
     }
@@ -108,7 +109,7 @@ public class ModelRepositoryClient {
             return outcome;
             
         } catch (Exception e) {
-			LOG.error(e);
+			LOG.error(e.getMessage());
 			return null;
 		}	
     }
@@ -127,8 +128,7 @@ public class ModelRepositoryClient {
     		return entries;
     		
         } catch (Exception e) {
-        	e.printStackTrace();
-			LOG.error(e);
+			LOG.error(e.getMessage());
 			return null;
 		}	
     }
@@ -147,7 +147,7 @@ public class ModelRepositoryClient {
     		return entries;
     		
         } catch (Exception e) {
-			LOG.error(e);
+			LOG.error(e.getMessage());
 			return null;
 		}	
     }
@@ -164,7 +164,7 @@ public class ModelRepositoryClient {
     		return outcome;
     		
         } catch (Exception e) {
-			LOG.error(e);
+			LOG.error(e.getMessage());
 			return null;
 		}	
     }
@@ -181,7 +181,7 @@ public class ModelRepositoryClient {
     		return outcome;
     		
         } catch (Exception e) {
-			LOG.error(e);
+			LOG.error(e.getMessage());
 			return null;
 		}	
     }
@@ -201,7 +201,7 @@ public class ModelRepositoryClient {
             return outcome;
             
         } catch (Exception e) {
-			LOG.error(e);
+			LOG.error(e.getMessage());
 			return null;
 		}	
     }
@@ -218,7 +218,7 @@ public class ModelRepositoryClient {
             return outcome;
             
         } catch (Exception e) {
-			LOG.error(e);
+			LOG.error(e.getMessage());
 			return null;
 		}	
     }
@@ -235,7 +235,7 @@ public class ModelRepositoryClient {
             return outcome;
             
         } catch (Exception e) {
-			LOG.error(e);
+			LOG.error(e.getMessage());
 			return null;
 		}	
     }
@@ -252,7 +252,7 @@ public class ModelRepositoryClient {
             return outcome;
             
         } catch (Exception e) {
-			LOG.error(e);
+			LOG.error(e.getMessage());
 			return null;
 		}	
     }
@@ -271,7 +271,7 @@ public class ModelRepositoryClient {
     		return entries;
     		
         } catch (Exception e) {
-			LOG.error(e);
+			LOG.error(e.getMessage());
 			return null;
 		}	
     }
@@ -290,7 +290,7 @@ public class ModelRepositoryClient {
     		return entries;
     		
         } catch (Exception e) {
-			LOG.error(e);
+			LOG.error(e.getMessage());
 			return null;
 		}	
     }

@@ -1,0 +1,543 @@
+{
+   "model": [
+      {
+         "domain_class": "Conveyer Belt",
+         "ls_stereotype": "Device",
+         "ls_id": "WSS0003",
+         "ls_attributes": {
+            "description": "conveyer belt which moves the cubes to the sorting unit",
+            "ttl": 60
+         },
+         "children": [
+            {
+               "domain_class": "Start-Stop Belt",
+               "ls_stereotype": "Resource",
+               "ls_id": "WS0033",
+               "ls_attributes": {
+                  "int_protocol": {},
+                  "ext_protocol": {}
+               },
+               "children": [],
+               "domain_attributes": {}
+            },
+            {
+               "domain_class": "Set Belt Speed",
+               "ls_stereotype": "Resource",
+               "ls_id": "WS0034",
+               "ls_attributes": {
+                  "int_protocol": {},
+                  "ext_protocol": {}
+               },
+               "children": [],
+               "domain_attributes": {}
+            },
+            {
+               "domain_class": "Energy Sensor",
+               "ls_stereotype": "Resource",
+               "ls_id": "WSS0017",
+               "ls_attributes": {"ext_protocol": {
+                  "methods": ["PUB"],
+                  "type": "MQTT",
+                  "content-types": ["application/senml+json"],
+                  "endpoint": {
+                     "put_topic": "/sortline/raw/converyer_belt_1/energy_sensor_1",
+                     "url": "tcp://mqtt-broker.local:1883"
+                  }
+               }},
+               "children": [],
+               "ls_name": "energy_sensor_1",
+               "domain_attributes": {}
+            },
+            {
+               "domain_class": "Optical Proximity Sensor",
+               "ls_stereotype": "Resource",
+               "ls_id": "WSS0016",
+               "ls_attributes": {"ext_protocol": {
+                  "methods": ["PUB"],
+                  "type": "MQTT",
+                  "content-types": ["application/senml+json"],
+                  "endpoint": {
+                     "put_topic": "/sortline/raw/converyer_belt_1/optical_proximity_5",
+                     "url": "tcp://mqtt-broker.local:1883"
+                  }
+               }},
+               "children": [],
+               "ls_name": "optical_proximity_5",
+               "domain_attributes": {}
+            }
+         ],
+         "ls_name": "conveyer_belt_1",
+         "domain_attributes": {}
+      },
+      {
+         "domain_class": "Sorting Unit",
+         "ls_stereotype": "Device",
+         "ls_id": "WSS0004",
+         "ls_attributes": {
+            "description": "Unit which sorts the cubes according to colour and material",
+            "ttl": 60
+         },
+         "children": [
+            {
+               "domain_class": "Ultrasonic level sensor",
+               "ls_stereotype": "Resource",
+               "ls_id": "WSS0019",
+               "ls_attributes": {"ext_protocol": {
+                  "methods": ["PUB"],
+                  "type": "MQTT",
+                  "content-types": ["application/senml+json"],
+                  "endpoint": {
+                     "put_topic": "/sortline/raw/sorting_unit_1/ultrasonic_level_1",
+                     "url": "tcp://mqtt-broker.local:1883"
+                  }
+               }},
+               "children": [],
+               "ls_name": "ultrasonic_level_1",
+               "domain_attributes": {}
+            },
+            {
+               "domain_class": "Inductive Proximity Switch",
+               "ls_stereotype": "Resource",
+               "ls_id": "WSS0018",
+               "ls_attributes": {"ext_protocol": {
+                  "methods": ["PUB"],
+                  "type": "MQTT",
+                  "content-types": ["application/senml+json"],
+                  "endpoint": {
+                     "put_topic": "/sortline/raw/sorting_unit_1/inductive_proximity_1",
+                     "url": "tcp://mqtt-broker.local:1883"
+                  }
+               }},
+               "children": [],
+               "ls_name": "inductive_proximity_1",
+               "domain_attributes": {}
+            },
+            {
+               "domain_class": "Optical reflection sensor",
+               "ls_stereotype": "Resource",
+               "ls_id": "WSS0020",
+               "ls_attributes": {"ext_protocol": {
+                  "methods": ["PUB"],
+                  "type": "MQTT",
+                  "content-types": ["application/senml+json"],
+                  "endpoint": {
+                     "put_topic": "/sortline/raw/sorting_unit_1/optical_reflection_1",
+                     "url": "tcp://mqtt-broker.local:1883"
+                  }
+               }},
+               "children": [],
+               "ls_name": "optical_reflection_1",
+               "domain_attributes": {}
+            }
+         ],
+         "domain_attributes": {}
+      },
+      {
+         "domain_class": "Cylinder",
+         "ls_stereotype": "Device",
+         "ls_id": "WSS0007",
+         "ls_attributes": {
+            "description": "Cylinder which pushes white cubes from conveyer belt",
+            "ttl": 60
+         },
+         "children": [
+            {
+               "domain_class": "Hall-effect Sensor",
+               "ls_stereotype": "Resource",
+               "ls_id": "WS0030",
+               "ls_attributes": {"ext_protocol": {
+                  "methods": ["PUB"],
+                  "type": "MQTT",
+                  "content-types": ["application/senml+json"],
+                  "endpoint": {
+                     "put_topic": "/sortline/raw/sorting_unit_1/hall_sensor_5",
+                     "url": "tcp://mqtt-broker.local:1883"
+                  }
+               }},
+               "children": [],
+               "ls_name": "hall_sensor_5",
+               "domain_attributes": {}
+            },
+            {
+               "domain_class": "Hall-effect Sensor",
+               "ls_stereotype": "Resource",
+               "ls_id": "WS0031",
+               "ls_attributes": {"ext_protocol": {
+                  "methods": ["PUB"],
+                  "type": "MQTT",
+                  "content-types": ["application/senml+json"],
+                  "endpoint": {
+                     "put_topic": "/sortline/raw/sorting_unit_1/hall_sensor_6",
+                     "url": "tcp://mqtt-broker.local:1883"
+                  }
+               }},
+               "children": [],
+               "ls_name": "hall_sensor_6",
+               "domain_attributes": {}
+            },
+            {
+               "domain_class": "Solenoid Valve",
+               "ls_stereotype": "Resource",
+               "ls_id": "WS0032",
+               "ls_attributes": {"ext_protocol": {
+                  "methods": ["PUB"],
+                  "type": "MQTT",
+                  "content-types": ["application/senml+json"],
+                  "endpoint": {
+                     "put_topic": "/sortline/raw/cylinder_3_sorting_unit_1/solenoid_valve_3",
+                     "url": "tcp://mqtt-broker.local:1883"
+                  }
+               }},
+               "children": [],
+               "ls_name": "solenoid_valve_3",
+               "domain_attributes": {}
+            },
+            {
+               "domain_class": "Optical Proximity Sensor",
+               "ls_stereotype": "Resource",
+               "ls_id": "WS0029",
+               "ls_attributes": {"ext_protocol": {
+                  "methods": ["PUB"],
+                  "type": "MQTT",
+                  "content-types": ["application/senml+json"],
+                  "endpoint": {
+                     "put_topic": "/sortline/raw/sorting_unit_1/optical_proximity_3",
+                     "url": "tcp://mqtt-broker.local:1883"
+                  }
+               }},
+               "children": [],
+               "ls_name": "optical_proximity_3",
+               "domain_attributes": {}
+            }
+         ],
+         "ls_name": "cylinder_3_sorting_unit_1",
+         "domain_attributes": {}
+      },
+      {
+         "domain_class": "Cylinder",
+         "ls_stereotype": "Device",
+         "ls_id": "WSS0005",
+         "ls_attributes": {
+            "description": "Cylinder which pushes black cubes from conveyer belt",
+            "ttl": 60
+         },
+         "children": [
+            {
+               "domain_class": "Optical Proximity Sensor",
+               "ls_stereotype": "Resource",
+               "ls_id": "WSS0021",
+               "ls_attributes": {"ext_protocol": {
+                  "methods": ["PUB"],
+                  "type": "MQTT",
+                  "content-types": ["application/senml+json"],
+                  "endpoint": {
+                     "put_topic": "/sortline/raw/cylinder_3_sorting_unit_1/solenoid_valve_1",
+                     "url": "tcp://mqtt-broker.local:1883"
+                  }
+               }},
+               "children": [],
+               "ls_name": "optical_proximity_1",
+               "domain_attributes": {}
+            },
+            {
+               "domain_class": "Hall-effect Sensor",
+               "ls_stereotype": "Resource",
+               "ls_id": "WSS0022",
+               "ls_attributes": {"ext_protocol": {
+                  "methods": ["PUB"],
+                  "type": "MQTT",
+                  "content-types": ["application/senml+json"],
+                  "endpoint": {
+                     "put_topic": "/sortline/raw/cylinder_3_sorting_unit_1/hall_sensor_1",
+                     "url": "tcp://mqtt-broker.local:1883"
+                  }
+               }},
+               "children": [],
+               "ls_name": "hall_sensor_1",
+               "domain_attributes": {}
+            },
+            {
+               "domain_class": "Hall-effect Sensor",
+               "ls_stereotype": "Resource",
+               "ls_id": "WSS0023",
+               "ls_attributes": {"ext_protocol": {
+                  "methods": ["PUB"],
+                  "type": "MQTT",
+                  "content-types": ["application/senml+json"],
+                  "endpoint": {
+                     "put_topic": "/sortline/raw/cylinder_3_sorting_unit_1/hall_sensor_2",
+                     "url": "tcp://mqtt-broker.local:1883"
+                  }
+               }},
+               "children": [],
+               "ls_name": "hall_sensor_2",
+               "domain_attributes": {}
+            },
+            {
+               "domain_class": "Solenoid Valve",
+               "ls_stereotype": "Resource",
+               "ls_id": "WS0024",
+               "ls_attributes": {"ext_protocol": {
+                  "methods": ["PUB"],
+                  "type": "MQTT",
+                  "content-types": ["application/senml+json"],
+                  "endpoint": {
+                     "put_topic": "/sortline/raw/cylinder_3_sorting_unit_1/solenoid_valve_1",
+                     "url": "tcp://mqtt-broker.local:1883"
+                  }
+               }},
+               "children": [],
+               "ls_name": "solenoid_valve_1",
+               "domain_attributes": {}
+            }
+         ],
+         "ls_name": "cylinder_1_sorting_unit_1",
+         "domain_attributes": {}
+      },
+      {
+         "domain_class": "Magazine Unit",
+         "ls_stereotype": "Device",
+         "ls_id": "WSS0001",
+         "ls_attributes": {
+            "description": "Magazine unit which pushes cubes on the conveyer belt",
+            "ttl": 60
+         },
+         "children": [
+            {
+               "domain_class": "Hall-effect Sensor",
+               "ls_stereotype": "Resource",
+               "ls_id": "WSS0015",
+               "ls_attributes": {"ext_protocol": {
+                  "methods": ["PUB"],
+                  "type": "MQTT",
+                  "content-types": ["application/senml+json"],
+                  "endpoint": {
+                     "put_topic": "/sortline/raw/magazine1/hall_sensor_2",
+                     "url": "tcp://mqtt-broker.local:1883"
+                  }
+               }},
+               "children": [],
+               "ls_name": "hall_sensor_2",
+               "domain_attributes": {}
+            },
+            {
+               "domain_class": "Contact Sensor",
+               "ls_stereotype": "Resource",
+               "ls_id": "WSS0010",
+               "ls_attributes": {"ext_protocol": {
+                  "methods": ["PUB"],
+                  "type": "MQTT",
+                  "content-types": ["application/senml+json"],
+                  "endpoint": {
+                     "put_topic": "/sortline/raw/cylinder_1_magazine1/contact_sensor_1",
+                     "url": "tcp://mqtt-broker.local:1883"
+                  }
+               }},
+               "children": [],
+               "ls_name": "contact_sensor_1",
+               "domain_attributes": {}
+            },
+            {
+               "domain_class": "Hall-effect Sensor",
+               "ls_stereotype": "Resource",
+               "ls_id": "WSS0014",
+               "ls_attributes": {"ext_protocol": {
+                  "methods": ["PUB"],
+                  "type": "MQTT",
+                  "content-types": ["application/senml+json"],
+                  "endpoint": {
+                     "put_topic": "/sortline/raw/magazine1/hall_sensor_1",
+                     "url": "tcp://mqtt-broker.local:1883"
+                  }
+               }},
+               "children": [],
+               "ls_name": "hall_sensor_1",
+               "domain_attributes": {}
+            }
+         ],
+         "ls_name": "magazine_1",
+         "domain_attributes": {}
+      },
+      {
+         "domain_class": "Cylinder",
+         "ls_stereotype": "Device",
+         "ls_id": "WSS0006",
+         "ls_attributes": {
+            "description": "Cylinder which pushes metal cubes from conveyer belt",
+            "ttl": 60
+         },
+         "children": [
+            {
+               "domain_class": "Optical Proximity Sensor",
+               "ls_stereotype": "Resource",
+               "ls_id": "WSS0025",
+               "ls_attributes": {"ext_protocol": {
+                  "methods": ["PUB"],
+                  "type": "MQTT",
+                  "content-types": ["application/senml+json"],
+                  "endpoint": {
+                     "put_topic": "/sortline/raw/cylinder_2_sorting_unit_1/optical_proximity_2",
+                     "url": "tcp://mqtt-broker.local:1883"
+                  }
+               }},
+               "children": [],
+               "ls_name": "WSS0024",
+               "domain_attributes": {}
+            },
+            {
+               "domain_class": "Solenoid Valve",
+               "ls_stereotype": "Resource",
+               "ls_id": "WS0028",
+               "ls_attributes": {"ext_protocol": {
+                  "methods": ["PUB"],
+                  "type": "MQTT",
+                  "content-types": ["application/senml+json"],
+                  "endpoint": {
+                     "put_topic": "/sortline/raw/sorting_unit_1/solenoid_valve_2",
+                     "url": "tcp://mqtt-broker.local:1883"
+                  }
+               }},
+               "children": [],
+               "ls_name": "solenoid_valve_2",
+               "domain_attributes": {}
+            },
+            {
+               "domain_class": "Hall-effect Sensor",
+               "ls_stereotype": "Resource",
+               "ls_id": "WS0026",
+               "ls_attributes": {"ext_protocol": {
+                  "methods": ["PUB"],
+                  "type": "MQTT",
+                  "content-types": ["application/senml+json"],
+                  "endpoint": {
+                     "put_topic": "/sortline/raw/sorting_unit_1/hall_sensor_3",
+                     "url": "tcp://mqtt-broker.local:1883"
+                  }
+               }},
+               "children": [],
+               "ls_name": "hall_sensor_3",
+               "domain_attributes": {}
+            },
+            {
+               "domain_class": "Hall-effect Sensor",
+               "ls_stereotype": "Resource",
+               "ls_id": "WS0027",
+               "ls_attributes": {"ext_protocol": {
+                  "methods": ["PUB"],
+                  "type": "MQTT",
+                  "content-types": ["application/senml+json"],
+                  "endpoint": {
+                     "put_topic": "/sortline/raw/sorting_unit_1/hall_sensor_4",
+                     "url": "tcp://mqtt-broker.local:1883"
+                  }
+               }},
+               "children": [],
+               "ls_name": "hall_sensor_4",
+               "domain_attributes": {}
+            }
+         ],
+         "ls_name": "cylinder_2_sorting_unit_2",
+         "domain_attributes": {}
+      },
+      {
+         "domain_class": "Cylinder",
+         "ls_stereotype": "Device",
+         "ls_id": "WSS0002",
+         "ls_attributes": {
+            "description": "cylinder used in magazine unit",
+            "ttl": 60
+         },
+         "children": [
+            {
+               "domain_class": "Hall-effect Sensor",
+               "ls_stereotype": "Resource",
+               "ls_id": "WSS0008",
+               "ls_attributes": {"ext_protocol": {
+                  "methods": ["PUB"],
+                  "type": "MQTT",
+                  "content-types": ["application/senml+json"],
+                  "endpoint": {
+                     "put_topic": "/sortline/raw/cylinder_1_magazine1/hall_sensor_1",
+                     "url": "tcp://mqtt-broker.local:1883"
+                  }
+               }},
+               "children": [],
+               "ls_name": "hall_sensor_1",
+               "domain_attributes": {}
+            },
+            {
+               "domain_class": "Hall-effect Sensor",
+               "ls_stereotype": "Resource",
+               "ls_id": "WSS0009",
+               "ls_attributes": {"ext_protocol": {
+                  "methods": ["PUB"],
+                  "type": "MQTT",
+                  "content-types": ["application/senml+json"],
+                  "endpoint": {
+                     "put_topic": "/sortline/raw/cylinder_1_magazine1/hall_sensor_2",
+                     "url": "tcp://mqtt-broker.local:1883"
+                  }
+               }},
+               "children": [],
+               "ls_name": "hall_sensor_2",
+               "domain_attributes": {}
+            },
+            {
+               "domain_class": "Solenoid Valve",
+               "ls_stereotype": "Resource",
+               "ls_id": "WSS0011",
+               "ls_attributes": {"ext_protocol": {
+                  "methods": ["PUB"],
+                  "type": "MQTT",
+                  "content-types": ["application/senml+json"],
+                  "endpoint": {
+                     "put_topic": "/sortline/raw/cylinder_1_magazine1/solenoid_valve_5",
+                     "url": "tcp://mqtt-broker.local:1883"
+                  }
+               }},
+               "children": [],
+               "ls_name": "solenoid_valve_5",
+               "domain_attributes": {}
+            },
+            {
+               "domain_class": "Optical Proximity Sensor",
+               "ls_stereotype": "Resource",
+               "ls_id": "WSS0013",
+               "ls_attributes": {"ext_protocol": {
+                  "methods": ["PUB"],
+                  "type": "MQTT",
+                  "content-types": ["application/senml+json"],
+                  "endpoint": {
+                     "put_topic": "/sortline/raw/cylinder_1_magazine1/optical_proximity_4",
+                     "url": "tcp://mqtt-broker.local:1883"
+                  }
+               }},
+               "children": [],
+               "ls_name": "optical_proximity_4",
+               "domain_attributes": {}
+            },
+            {
+               "domain_class": "Solenoid Valve",
+               "ls_stereotype": "Resource",
+               "ls_id": "WSS0012",
+               "ls_attributes": {"ext_protocol": {
+                  "methods": ["PUB"],
+                  "type": "MQTT",
+                  "content-types": ["application/senml+json"],
+                  "endpoint": {
+                     "put_topic": "/sortline/raw/cylinder_1_magazine1/solenoid_valve_4",
+                     "url": "tcp://mqtt-broker.local:1883"
+                  }
+               }},
+               "children": [],
+               "ls_name": "solenoid_valve_4",
+               "domain_attributes": {}
+            }
+         ],
+         "ls_name": "cylinder_1_magazine_1",
+         "domain_attributes": {}
+      }
+   ],
+   "name": "wuerfelstrasse",
+   "version": "1"
+}

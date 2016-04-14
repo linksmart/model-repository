@@ -39,6 +39,16 @@
             <fileMode>0755</fileMode>
             <filtered>true</filtered>
         </file>
+        <file>
+            <source>src/main/assembly/add.sh</source>
+            <fileMode>0755</fileMode>
+            <filtered>true</filtered>
+        </file>
+        <file>
+            <source>src/main/assembly/add.bat</source>
+            <fileMode>0755</fileMode>
+            <filtered>true</filtered>
+        </file>
     </files>
 
 </assembly>

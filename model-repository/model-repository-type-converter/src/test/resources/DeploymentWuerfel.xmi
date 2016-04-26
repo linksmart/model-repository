@@ -8610,7 +8610,7 @@
 				</xmi:Extension>
 			</slot>
 			<slot definingFeature="4m9CCsqECGlEBTt_" name="Slot" xmi:id="LTHezCqECGlGHwpI" xmi:type="uml:Slot">
-				<value body="&quot;type&quot;: &quot;TCP&quot;, &quot;endpoint&quot;: { &quot;IP&quot;: &quot;192.168.0.200&quot;, &quot;port&quot;: &quot;5001&quot;, &quot;datatype&quot;: &quot;Word&quot;}, &quot;methods&quot;: [], &quot;content-types&quot;: []" xmi:id="7IoRzCqECGlGHwvU" xmi:type="uml:OpaqueExpression"/>
+				<value body="&quot;type&quot;: &quot;TCP&quot;, &quot;endpoint&quot;: { &quot;IP&quot;: &quot;192.168.0.200&quot;, &quot;port&quot;: &quot;5001&quot;, &quot;tag&quot;: &quot;beltBarcodeReader&quot;, &quot;datatype&quot;: &quot;Word&quot;}, &quot;methods&quot;: [], &quot;content-types&quot;: []" xmi:id="7IoRzCqECGlGHwvU" xmi:type="uml:OpaqueExpression"/>
 				<xmi:Extension extender="Visual Paradigm">
 					<qualityScore value="-1"/>
 				</xmi:Extension>
@@ -10472,7 +10472,7 @@
 				<ashowAllocatedTo value="true"/>
 				<apmAuthor value="Fisseler"/>
 				<apmCreateDateTime value="1457337037371"/>
-				<apmLastModified value="1461675435156"/>
+				<apmLastModified value="1461676175159"/>
 				<ashowPackageNameStyle value="0"/>
 				<ashowConnectorName value="0"/>
 				<apaintConnectorThroughLabel value="0"/>
@@ -14588,7 +14588,7 @@
 				<ashowAllocatedTo value="true"/>
 				<apmAuthor value="Fisseler"/>
 				<apmCreateDateTime value="1458569382752"/>
-				<apmLastModified value="1461675444578"/>
+				<apmLastModified value="1461676178067"/>
 				<ashowPackageNameStyle value="0"/>
 				<ashowConnectorName value="0"/>
 				<apaintConnectorThroughLabel value="0"/>
@@ -15458,7 +15458,7 @@
 					<captionVisible value="true"/>
 					<captionSide value="12"/>
 					<properties>
-						<azOrder value="38"/>
+						<azOrder value="39"/>
 						<abackground value="Cr:122,207,245,255"/>
 						<aforeground value="Cr:0,0,0,255"/>
 						<aselectable value="true"/>
@@ -15494,7 +15494,7 @@
 					<captionVisible value="true"/>
 					<captionSide value="12"/>
 					<properties>
-						<azOrder value="40"/>
+						<azOrder value="41"/>
 						<abackground value="Cr:122,207,245,255"/>
 						<aforeground value="Cr:0,0,0,255"/>
 						<aselectable value="true"/>
@@ -15530,7 +15530,7 @@
 					<captionVisible value="true"/>
 					<captionSide value="12"/>
 					<properties>
-						<azOrder value="42"/>
+						<azOrder value="43"/>
 						<abackground value="Cr:122,207,245,255"/>
 						<aforeground value="Cr:0,0,0,255"/>
 						<aselectable value="true"/>
@@ -15566,7 +15566,7 @@
 					<captionVisible value="true"/>
 					<captionSide value="12"/>
 					<properties>
-						<azOrder value="44"/>
+						<azOrder value="45"/>
 						<abackground value="Cr:122,207,245,255"/>
 						<aforeground value="Cr:0,0,0,255"/>
 						<aselectable value="true"/>
@@ -15602,7 +15602,7 @@
 					<captionVisible value="true"/>
 					<captionSide value="12"/>
 					<properties>
-						<azOrder value="46"/>
+						<azOrder value="47"/>
 						<abackground value="Cr:122,207,245,255"/>
 						<aforeground value="Cr:0,0,0,255"/>
 						<aselectable value="true"/>
@@ -15638,7 +15638,7 @@
 					<captionVisible value="true"/>
 					<captionSide value="12"/>
 					<properties>
-						<azOrder value="48"/>
+						<azOrder value="49"/>
 						<abackground value="Cr:122,207,245,255"/>
 						<aforeground value="Cr:0,0,0,255"/>
 						<aselectable value="true"/>
@@ -15714,7 +15714,7 @@
 					<captionVisible value="true"/>
 					<captionSide value="12"/>
 					<properties>
-						<azOrder value="50"/>
+						<azOrder value="51"/>
 						<abackground value="Cr:122,207,245,255"/>
 						<aforeground value="Cr:0,0,0,255"/>
 						<aselectable value="true"/>
@@ -15750,7 +15750,7 @@
 					<captionVisible value="true"/>
 					<captionSide value="12"/>
 					<properties>
-						<azOrder value="52"/>
+						<azOrder value="53"/>
 						<abackground value="Cr:122,207,245,255"/>
 						<aforeground value="Cr:0,0,0,255"/>
 						<aselectable value="true"/>
@@ -15786,7 +15786,7 @@
 					<captionVisible value="true"/>
 					<captionSide value="12"/>
 					<properties>
-						<azOrder value="54"/>
+						<azOrder value="55"/>
 						<abackground value="Cr:122,207,245,255"/>
 						<aforeground value="Cr:0,0,0,255"/>
 						<aselectable value="true"/>
@@ -15822,7 +15822,7 @@
 					<captionVisible value="true"/>
 					<captionSide value="12"/>
 					<properties>
-						<azOrder value="56"/>
+						<azOrder value="57"/>
 						<abackground value="Cr:122,207,245,255"/>
 						<aforeground value="Cr:0,0,0,255"/>
 						<aselectable value="true"/>
@@ -15858,7 +15858,7 @@
 					<captionVisible value="true"/>
 					<captionSide value="12"/>
 					<properties>
-						<azOrder value="58"/>
+						<azOrder value="59"/>
 						<abackground value="Cr:122,207,245,255"/>
 						<aforeground value="Cr:0,0,0,255"/>
 						<aselectable value="true"/>
@@ -15894,7 +15894,7 @@
 					<captionVisible value="true"/>
 					<captionSide value="12"/>
 					<properties>
-						<azOrder value="60"/>
+						<azOrder value="61"/>
 						<abackground value="Cr:122,207,245,255"/>
 						<aforeground value="Cr:0,0,0,255"/>
 						<aselectable value="true"/>
@@ -15930,7 +15930,7 @@
 					<captionVisible value="true"/>
 					<captionSide value="12"/>
 					<properties>
-						<azOrder value="62"/>
+						<azOrder value="63"/>
 						<abackground value="Cr:122,207,245,255"/>
 						<aforeground value="Cr:0,0,0,255"/>
 						<aselectable value="true"/>
@@ -15966,7 +15966,7 @@
 					<captionVisible value="true"/>
 					<captionSide value="12"/>
 					<properties>
-						<azOrder value="64"/>
+						<azOrder value="65"/>
 						<abackground value="Cr:122,207,245,255"/>
 						<aforeground value="Cr:0,0,0,255"/>
 						<aselectable value="true"/>
@@ -16002,7 +16002,7 @@
 					<captionVisible value="true"/>
 					<captionSide value="12"/>
 					<properties>
-						<azOrder value="66"/>
+						<azOrder value="67"/>
 						<abackground value="Cr:122,207,245,255"/>
 						<aforeground value="Cr:0,0,0,255"/>
 						<aselectable value="true"/>
@@ -16038,7 +16038,7 @@
 					<captionVisible value="true"/>
 					<captionSide value="12"/>
 					<properties>
-						<azOrder value="68"/>
+						<azOrder value="69"/>
 						<abackground value="Cr:122,207,245,255"/>
 						<aforeground value="Cr:0,0,0,255"/>
 						<aselectable value="true"/>
@@ -16074,7 +16074,7 @@
 					<captionVisible value="true"/>
 					<captionSide value="12"/>
 					<properties>
-						<azOrder value="70"/>
+						<azOrder value="71"/>
 						<abackground value="Cr:122,207,245,255"/>
 						<aforeground value="Cr:0,0,0,255"/>
 						<aselectable value="true"/>
@@ -16110,7 +16110,7 @@
 					<captionVisible value="true"/>
 					<captionSide value="12"/>
 					<properties>
-						<azOrder value="72"/>
+						<azOrder value="73"/>
 						<abackground value="Cr:122,207,245,255"/>
 						<aforeground value="Cr:0,0,0,255"/>
 						<aselectable value="true"/>
@@ -16146,7 +16146,7 @@
 					<captionVisible value="true"/>
 					<captionSide value="12"/>
 					<properties>
-						<azOrder value="74"/>
+						<azOrder value="75"/>
 						<abackground value="Cr:122,207,245,255"/>
 						<aforeground value="Cr:0,0,0,255"/>
 						<aselectable value="true"/>

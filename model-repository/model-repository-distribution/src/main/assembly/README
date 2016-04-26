@@ -17,6 +17,11 @@ Depending on OS either call "start.sh" or "start.bat" to start the client.
 There is a configuration file called "model-repository.properties" to configure parameters like host name, port and base URL path
 dbstorage.properties is used to configure storage backend for the service
 
+There is also a script for adding a domain model into the model repository. It can be executed as follows:
+
+> add.bat [model-repo-url] [xmidocument name] [file-name]
+> add.bat http://localhost:9090/repo/mr DeploymentWuerfel DeploymentWuerfel.xmi
+
 COPYING / LICENSE 	see LICENSE for details
 
 BUGS

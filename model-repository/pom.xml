@@ -4,7 +4,7 @@
 	
 	<groupId>eu.linksmart.services.mr</groupId>
 	<artifactId>model-repository</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2-SNAPSHOT</version>
 	
 	<name>LinkSmart - Domain Model Repository Service</name>
 
@@ -23,7 +23,7 @@
 
 	<properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <linksmart.mr.version>0.0.1</linksmart.mr.version>
+        <linksmart.mr.version>0.0.2-SNAPSHOT</linksmart.mr.version>
         <java.compiler.version>1.7</java.compiler.version>
         <maven.compiler.version>3.1</maven.compiler.version>
         <maven.source.version>2.2.1</maven.source.version>

@@ -5,7 +5,7 @@
 	<parent>
         <groupId>eu.linksmart.services.mr</groupId>
 		<artifactId>model-repository</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.1</version>
     </parent>
 
     <artifactId>model-repository-service</artifactId>

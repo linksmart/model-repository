@@ -14,7 +14,7 @@
 			<property name="eclipselink.jdbc.url" value="jdbc:hsqldb:file:model_repository-data/testdb" />
 			<property name="eclipselink.jdbc.driver" value="org.hsqldb.jdbcDriver" />
 			<property name="eclipselink.target-database" value="HSQL" />
-			<property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
+			<property name="eclipselink.ddl-generation" value="create-tables" />
 
 			<property name="eclipselink.cache.shared.default" value="true" />
 			<property name="eclipselink.cache.size.default" value="1000" />

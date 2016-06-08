@@ -8480,13 +8480,13 @@
 				</xmi:Extension>
 			</slot>
 			<slot definingFeature="tcxFGcqAUkDO3x5l" name="Slot" xmi:id="1QgnecqECGlEBQrW" xmi:type="uml:Slot">
-				<value body="{ &quot;type&quot;: &quot;MQTT&quot;, &quot;endpoint&quot;: {&quot;url&quot;: &quot;tcp://mqtt-broker.local:1883&quot;, &quot;pub_topic&quot;: &quot;/sortline/raw/cylinder_1_magazine1/solenoid_valve_5&quot; }, &quot;methods&quot;: [&quot;PUB&quot;], &quot;content-types&quot;: [&quot;application/senml+json; datatype=boolean&quot; ] }}" xmi:id="qgSnecqECGlEBQrf" xmi:type="uml:OpaqueExpression"/>
+				<value body="{ &quot;type&quot;: &quot;MQTT&quot;, &quot;endpoint&quot;: {&quot;url&quot;: &quot;tcp://mqtt-broker.local:1883&quot;, &quot;pub_topic&quot;: &quot;/sortline/raw/cylinder_1_magazine1/solenoid_valve_5&quot; }, &quot;methods&quot;: [&quot;PUB&quot;], &quot;content-types&quot;: [&quot;application/senml+json; datatype=string&quot; ] }}" xmi:id="qgSnecqECGlEBQrf" xmi:type="uml:OpaqueExpression"/>
 				<xmi:Extension extender="Visual Paradigm">
 					<qualityScore value="-1"/>
 				</xmi:Extension>
 			</slot>
 			<slot definingFeature="ucQiCsqECGlEBTvd" name="Slot" xmi:id="Ui9nUCqECGlGHwv4" xmi:type="uml:Slot">
-				<value body="&quot;type&quot;: &quot;S7&quot;, &quot;endpoint&quot;: { &quot;IP&quot;: &quot;192.168.0.200&quot;, &quot;tag&quot;: &quot;MG-EXTEND-CMD&quot;, &quot;datatype&quot;: &quot;Bool&quot;, &quot;address&quot;: &quot;%Q8.1&quot; }, &quot;methods&quot;: [], &quot;content-types&quot;: []" xmi:id="p9DnUCqECGlGHwv6" xmi:type="uml:OpaqueExpression"/>
+				<value body="&quot;type&quot;: &quot;TCP&quot;, &quot;endpoint&quot;: { &quot;IP&quot;: &quot;192.168.0.200&quot;, &quot;port&quot;: &quot;5001&quot;, &quot;tag&quot;: &quot;MG-EXTEND-CMD&quot;, &quot;datatype&quot;: &quot;String&quot;}, &quot;methods&quot;: [], &quot;content-types&quot;: []" xmi:id="p9DnUCqECGlGHwv6" xmi:type="uml:OpaqueExpression"/>
 				<xmi:Extension extender="Visual Paradigm">
 					<qualityScore value="-1"/>
 				</xmi:Extension>
@@ -10541,7 +10541,7 @@
 				<ashowAllocatedTo value="true"/>
 				<apmAuthor value="Fisseler"/>
 				<apmCreateDateTime value="1457337037371"/>
-				<apmLastModified value="1465314160776"/>
+				<apmLastModified value="1465388792856"/>
 				<ashowPackageNameStyle value="0"/>
 				<ashowConnectorName value="0"/>
 				<apaintConnectorThroughLabel value="0"/>
@@ -14657,7 +14657,7 @@
 				<ashowAllocatedTo value="true"/>
 				<apmAuthor value="Fisseler"/>
 				<apmCreateDateTime value="1458569382752"/>
-				<apmLastModified value="1465385569379"/>
+				<apmLastModified value="1465388805488"/>
 				<ashowPackageNameStyle value="0"/>
 				<ashowConnectorName value="0"/>
 				<apaintConnectorThroughLabel value="0"/>
@@ -16253,7 +16253,7 @@
 					<captionVisible value="true"/>
 					<captionSide value="12"/>
 					<properties>
-						<azOrder value="77"/>
+						<azOrder value="76"/>
 						<abackground value="Cr:122,207,245,255"/>
 						<aforeground value="Cr:0,0,0,255"/>
 						<aselectable value="true"/>
@@ -16289,7 +16289,7 @@
 					<captionVisible value="true"/>
 					<captionSide value="12"/>
 					<properties>
-						<azOrder value="79"/>
+						<azOrder value="78"/>
 						<abackground value="Cr:122,207,245,255"/>
 						<aforeground value="Cr:0,0,0,255"/>
 						<aselectable value="true"/>
@@ -17963,7 +17963,7 @@
 				<ashowAllocatedTo value="true"/>
 				<apmAuthor value="rachev"/>
 				<apmCreateDateTime value="1465310371214"/>
-				<apmLastModified value="1465314160780"/>
+				<apmLastModified value="1465388792860"/>
 				<ashowPackageNameStyle value="0"/>
 				<ashowConnectorName value="0"/>
 				<apaintConnectorThroughLabel value="0"/>

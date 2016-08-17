@@ -44,7 +44,43 @@ public class UMLInstance {
         return upperInstance != null;
     }
 
+    // -----------------------------------------------------------------
+    // used to create a JSON version for E3_domain_simplifiedCube.vpp
+    // -----------------------------------------------------------------
+    public JSONObject toPureJSON(){
+        JSONObject out = new JSONObject();
+        out.put( "instance_name", name);
+        out.put( "class_name", type.className);
+        out.put( "stereotype", type.getStereotypeName());
+
+        //out.put(domain_attributes)
+        JSONObject domain_attributes = new JSONObject();
+        for(Map.Entry e : attrValues.entrySet()){
+            String attrValue = (String)e.getValue();
+            String attrName = (String)e.getKey();
+            domain_attributes.put( attrName, attrValue);
+        }
+
+        //out.put( children);
+        JSONArray children = new JSONArray();
+        for( UMLInstance instance : descendingInstances) {
+            children.put( instance.toJSON());
+        }
+
+        out.put("children", children);
+        out.put( "attributes", domain_attributes);
+        return out;
+    }
     public JSONObject toJSON(){
+
+        // -----------------------------------------------------------------
+        // used to create a JSON version for E3_domain_simplifiedCube.vpp
+        // -----------------------------------------------------------------
+        //
+        // if (true) return toPureJSON();
+        //
+        // -----------------------------------------------------------------
+
         JSONObject out = new JSONObject();
         out.put( "ls_id", ls_attrValues.get( "ls_id"));
         out.put( "ls_name", ls_attrValues.get( "ls_name"));

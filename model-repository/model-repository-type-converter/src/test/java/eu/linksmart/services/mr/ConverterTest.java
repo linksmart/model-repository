@@ -28,7 +28,10 @@ public class ConverterTest {
 	@Test
 	public void testConvert() throws Exception {
 
-		byte[] encoded = Files.readAllBytes(Paths.get(getClass().getResource("/model.xmi").toURI()));
+//		byte[] encoded = Files.readAllBytes(Paths.get(getClass().getResource("/model.xmi").toURI()));
+//		byte[] encoded = Files.readAllBytes(Paths.get(getClass().getResource("/simple_deployment5.xmi").toURI()));
+		byte[] encoded = Files.readAllBytes(Paths.get(getClass().getResource("/DeploymentWuerfel.xmi").toURI()));
+//		byte[] encoded = Files.readAllBytes(Paths.get(getClass().getResource("/E3_domain_simplifiedCube_R.xmi").toURI()));
 		String jsonModelDoc = new String(encoded, Charset.defaultCharset());
 		String modelIdentifier = "1.0.1";
 		Integer modelVersion = 5;

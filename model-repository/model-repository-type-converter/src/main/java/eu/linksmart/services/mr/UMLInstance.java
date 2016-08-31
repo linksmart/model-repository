@@ -1,5 +1,6 @@
 package eu.linksmart.services.mr;
 
+//import com.oracle.deploy.update.UpdateCheck;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -83,7 +84,8 @@ public class UMLInstance {
 
         JSONObject out = new JSONObject();
         out.put( "ls_id", ls_attrValues.get( "ls_id"));
-        out.put( "ls_name", ls_attrValues.get( "ls_name"));
+        //out.put( "ls_name", ls_attrValues.get( "ls_name"));
+        out.put( "ls_name", getOrMake_ls_name());
         out.put( "ls_stereotype", type.getStereotypeName());
 
         //out.put(ls_attrValues)
@@ -92,7 +94,10 @@ public class UMLInstance {
             ls_attributes.put("description", ls_attrValues.get( ATTR_NAME_DESCRIPTION));
             if (ls_attrValues.containsKey( ATTR_NAME_META))
                 ls_attributes.put("meta", new JSONObject( ls_attrValues.get( ATTR_NAME_META)));
-            ls_attributes.put("ttl", Integer.parseInt(ls_attrValues.get( ATTR_NAME_TTL)));
+            if (ls_attrValues.containsKey( ATTR_NAME_TTL))
+                ls_attributes.put("ttl", Integer.parseInt(ls_attrValues.get( ATTR_NAME_TTL)));
+            else
+                ls_attributes.put("ttl", -1);
         } else {  //UMLModel.STEREOTYPE_RESOURCE_NAME
             if (ls_attrValues.containsKey(ATTR_NAME_META))
                 ls_attributes.put("meta", new JSONObject( ls_attrValues.get( ATTR_NAME_META)));
@@ -190,6 +195,38 @@ public class UMLInstance {
     public String getUmlID(){
         return umlID;
     }
+
+    public String getLs_NamesChain( ){
+        // used to create Topic Name as "device1/device12/resourcename"
+        String chain = ls_attrValues.get( "ls_name");
+
+        UMLInstance parent = getUpperInstance();
+        while (parent != null)
+        {
+            chain = parent.name + "/" + chain;
+            parent = parent.getUpperInstance();
+        }
+
+        return chain;
+    }
+
+    public String getOrMake_ls_name( ){
+        String ls_name = ls_attrValues.get( "ls_name");
+        if (ls_name.isEmpty() || (ls_name.trim()).length()==0)
+        {
+            // make ls_name like "device1/device12/resourcename"
+            ls_name="";
+            UMLInstance parent = getUpperInstance();
+            while (parent != null)
+            {
+                ls_name = parent.name + "/" + ls_name;
+                parent = parent.getUpperInstance();
+            }
+        }
+
+        return ls_name;
+    }
+
 
     public boolean isLSArtifact(){
         // return if stereotypeID is a LS stereotype name

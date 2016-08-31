@@ -30,7 +30,9 @@ public class ConverterTest {
 
 //		byte[] encoded = Files.readAllBytes(Paths.get(getClass().getResource("/model.xmi").toURI()));
 //		byte[] encoded = Files.readAllBytes(Paths.get(getClass().getResource("/simple_deployment5.xmi").toURI()));
-		byte[] encoded = Files.readAllBytes(Paths.get(getClass().getResource("/DeploymentWuerfel.xmi").toURI()));
+//		byte[] encoded = Files.readAllBytes(Paths.get(getClass().getResource("/DeploymentWuerfel.xmi").toURI()));
+		byte[] encoded = Files.readAllBytes(Paths.get(getClass().getResource("/DeploymentWuerfel_OPC.xmi").toURI()));
+//		byte[] encoded = Files.readAllBytes(Paths.get(getClass().getResource("/Deployment-E3-IWU.xmi").toURI()));
 //		byte[] encoded = Files.readAllBytes(Paths.get(getClass().getResource("/E3_domain_simplifiedCube_R.xmi").toURI()));
 		String jsonModelDoc = new String(encoded, Charset.defaultCharset());
 		String modelIdentifier = "1.0.1";

@@ -35,7 +35,12 @@ public class ModelRepositoryServiceIT extends AbstractIT {
     		ModelRepositoryClient.initialize(URL);
     		
     		String modelName = "sampleXmi";
-    		
+
+			int initialSize = 0;
+			MultivaluedMap<String, String> listXmi = ModelRepositoryClient.listXmiModels();
+			if( listXmi != null)
+				initialSize = listXmi.size();
+
 			String xmiModelString = new String(Files.readAllBytes(Paths.get(getClass().getResource("/model.xmi").toURI())), Charset.defaultCharset());
 			
 			String modelURI = ModelRepositoryClient.addXmi(modelName, xmiModelString);
@@ -46,10 +51,10 @@ public class ModelRepositoryServiceIT extends AbstractIT {
         	assertNotNull(modelURI2);
         	LOG.info("URI-2: " + modelURI2);
         	
-        	MultivaluedMap<String, String> listXmi = ModelRepositoryClient.listXmiModels();
+        	listXmi = ModelRepositoryClient.listXmiModels();
         	assertNotNull(listXmi);
-        	assertEquals(2, listXmi.size());
-        	LOG.info("listXmi - expecting 2 entries: " + listXmi.size());
+        	assertEquals((initialSize + 2), listXmi.size());
+        	LOG.info("listXmi - expecting" + (initialSize + 2) + " entries: " + listXmi.size());
         	for (Entry<String, List<String>> entry : listXmi.entrySet()) {
         		LOG.info("[listXmi] " + entry.getKey() + " - " + entry.getValue().get(0));
             }

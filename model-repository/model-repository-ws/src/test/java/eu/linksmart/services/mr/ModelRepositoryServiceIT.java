@@ -54,7 +54,7 @@ public class ModelRepositoryServiceIT extends AbstractIT {
         	listXmi = ModelRepositoryClient.listXmiModels();
         	assertNotNull(listXmi);
         	assertEquals((initialSize + 2), listXmi.size());
-        	LOG.info("listXmi - expecting" + (initialSize + 2) + " entries: " + listXmi.size());
+        	LOG.info("listXmi - expecting " + (initialSize + 2) + " entries: " + listXmi.size());
         	for (Entry<String, List<String>> entry : listXmi.entrySet()) {
         		LOG.info("[listXmi] " + entry.getKey() + " - " + entry.getValue().get(0));
             }
@@ -79,7 +79,7 @@ public class ModelRepositoryServiceIT extends AbstractIT {
         	
         	MultivaluedMap<String, String> listXmiFinal = ModelRepositoryClient.listXmiModels();
         	assertNotNull(listXmiFinal);
-        	assertEquals(0, listXmiFinal.size());
+        	assertEquals(initialSize, listXmiFinal.size());
         	
         	LOG.info("testXmiList successfully completed");
         	

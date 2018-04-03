@@ -90,7 +90,7 @@ public class MRApplication {
 		//ModelRepository.getInstance().closePersistence();
 		container.stopContainer();
 		container.interrupt();
-//		try { Thread.sleep(1000); } catch (InterruptedException e) { }
+		try { Thread.sleep(1000); } catch (InterruptedException e) { }
 		LOG.info("model repository server terminated");
 		Runtime.getRuntime().runFinalization();
 		System.exit(0);
@@ -103,6 +103,13 @@ public class MRApplication {
 
 		InputStream inputStream = getClass().getResourceAsStream(PROPERTY_FILE);
 		prop.load(inputStream);
+
+		LOG.info("using host: " + this.host);
+		LOG.info("using port: " + this.port);
+		LOG.info("using path: " + this.pathContext);
+		LOG.info("using serviceID: " + this.serviceID);
+		LOG.info("using scFile: " + this.SERVICE_FILE);
+		LOG.info("using scURL: " + this.SC_BASE_URL);
 
 		this.host = prop.getProperty("model.repository.host");
 		this.port = Integer.parseInt(prop.getProperty("model.repository.port"));

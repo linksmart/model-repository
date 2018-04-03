@@ -114,9 +114,9 @@ public class MRApplication {
 		this.host = prop.getProperty("model.repository.host");
 		this.port = Integer.parseInt(prop.getProperty("model.repository.port"));
 		this.pathContext = prop.getProperty("model.repository.path");
-		this.serviceID = prop.getProperty("model.repository.serviceID");
-		this.SERVICE_FILE = prop.getProperty("model.repository.scFile");
-		this.SC_BASE_URL = prop.getProperty("model.repository.scURL");
+		this.serviceID = prop.getProperty("model.repository.serviceid");
+		this.SERVICE_FILE = prop.getProperty("model.repository.scfile");
+		this.SC_BASE_URL = prop.getProperty("model.repository.scurl");
 
 		LOG.info("using host: " + this.host);
 		LOG.info("using port: " + this.port);

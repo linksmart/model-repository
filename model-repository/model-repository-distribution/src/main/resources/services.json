@@ -1,0 +1,16 @@
+{
+  "id": "example-MR",
+  "name": "_linksmart-mr._tcp",
+  "description": "Example LinkSmart® Model Repository",
+  "apis": {
+    "HTTP": "http://localhost:9090/"
+  },
+  "docs": [
+    {
+      "description": "Documentation",
+      "type": "text/html",
+      "url": "http://doc.linksmart.eu/MR"
+    }
+  ],
+  "ttl": 120
+}

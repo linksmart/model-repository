@@ -41,6 +41,8 @@ public class MRApplication {
 
 	private boolean scRegistered = false;
 
+	private boolean deregisterOnExit = true;
+
 	public static void main(String[] args) {
 		new MRApplication();
 	}
@@ -86,7 +88,7 @@ public class MRApplication {
 		LOG.info("shutting down the model repository");
 		LOG.info("------------------------------------------------------------------------------------");
 
-		if (scRegistered) deleteRegistrationInSC(serviceID);
+		if (scRegistered && deregisterOnExit) deleteRegistrationInSC(serviceID);
 		//ModelRepository.getInstance().closePersistence();
 		container.stopContainer();
 		container.interrupt();
@@ -104,19 +106,13 @@ public class MRApplication {
 		InputStream inputStream = getClass().getResourceAsStream(PROPERTY_FILE);
 		prop.load(inputStream);
 
-		LOG.info("using host: " + this.host);
-		LOG.info("using port: " + this.port);
-		LOG.info("using path: " + this.pathContext);
-		LOG.info("using serviceID: " + this.serviceID);
-		LOG.info("using scFile: " + this.SERVICE_FILE);
-		LOG.info("using scURL: " + this.SC_BASE_URL);
-
 		this.host = prop.getProperty("model.repository.host");
 		this.port = Integer.parseInt(prop.getProperty("model.repository.port"));
 		this.pathContext = prop.getProperty("model.repository.path");
-		this.serviceID = prop.getProperty("model.repository.serviceid");
-		this.SERVICE_FILE = prop.getProperty("model.repository.scfile");
-		this.SC_BASE_URL = prop.getProperty("model.repository.scurl");
+		this.serviceID = prop.getProperty("model.repository.serviceID");
+		this.SERVICE_FILE = prop.getProperty("model.repository.scFile");
+		this.SC_BASE_URL = prop.getProperty("model.repository.scURL");
+		this.deregisterOnExit = Boolean.parseBoolean(prop.getProperty("model.repository.deregisterOnExit"));
 
 		LOG.info("using host: " + this.host);
 		LOG.info("using port: " + this.port);
@@ -124,6 +120,7 @@ public class MRApplication {
 		LOG.info("using serviceID: " + this.serviceID);
 		LOG.info("using scFile: " + this.SERVICE_FILE);
 		LOG.info("using scURL: " + this.SC_BASE_URL);
+		LOG.info("using deregisterOnExit: " + this.deregisterOnExit);
 
 		inputStream.close();
 	}

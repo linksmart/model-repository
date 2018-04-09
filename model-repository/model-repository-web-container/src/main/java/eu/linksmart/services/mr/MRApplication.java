@@ -29,6 +29,8 @@ public class MRApplication {
 
 	private String pathContext = "model-repository";
 
+	private int ttl;
+
 	private final String PROPERTY_FILE = "/model-repository.properties";
 
 	private RepositoryWebContainer container = null;
@@ -76,11 +78,42 @@ public class MRApplication {
 			System.exit(1);
 		}
 
+
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
 				shutdown();
 			}
 		});
+
+		if (ttl > 0) {
+			new Thread() {
+				public void run() {
+					LOG.info("model repository wait on TTL: " + ttl);
+					try { Thread.sleep(ttl);  } catch (InterruptedException e) { }
+					shutdown();
+					LOG.info("model repository exiting on TTL: " + ttl);
+				}
+			}.start();
+		}
+
+/*		try {
+			if (ttl > 0) {
+				Thread.sleep(ttl);
+				LOG.info("model repository exiting on ttl: " + ttl);
+				shutdown();
+				}
+			else
+				Runtime.getRuntime().addShutdownHook(new Thread() {
+				public void run() {
+					shutdown();
+				}
+			});
+
+		} catch (Exception ie) {
+			LOG.error("exception by Thread.sleep(ttl) :" + ie.getMessage());
+			System.exit(1);
+		}
+*/
 	}
 
 	protected void shutdown() {
@@ -109,6 +142,8 @@ public class MRApplication {
 		this.host = prop.getProperty("model.repository.host");
 		this.port = Integer.parseInt(prop.getProperty("model.repository.port"));
 		this.pathContext = prop.getProperty("model.repository.path");
+		this.ttl = Integer.parseInt(prop.getProperty("model.repository.ttl"));
+
 		this.serviceID = prop.getProperty("model.repository.serviceID");
 		this.SERVICE_FILE = prop.getProperty("model.repository.scFile");
 		this.SC_BASE_URL = prop.getProperty("model.repository.scURL");
@@ -117,6 +152,7 @@ public class MRApplication {
 		LOG.info("using host: " + this.host);
 		LOG.info("using port: " + this.port);
 		LOG.info("using path: " + this.pathContext);
+		LOG.info("using ttl: " + this.ttl);
 		LOG.info("using serviceID: " + this.serviceID);
 		LOG.info("using scFile: " + this.SERVICE_FILE);
 		LOG.info("using scURL: " + this.SC_BASE_URL);

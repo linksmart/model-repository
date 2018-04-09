@@ -3,7 +3,7 @@
   "name": "_linksmart-mr._tcp",
   "description": "Example LinkSmart® Model Repository",
   "apis": {
-    "HTTP": "http://localhost:9090/"
+    "HTTP": "http://localhost:9089/"
   },
   "docs": [
     {

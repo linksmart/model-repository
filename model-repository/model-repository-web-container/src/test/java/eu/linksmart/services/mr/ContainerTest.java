@@ -9,7 +9,7 @@ public class ContainerTest {
 		
 		MRApplication dm = new MRApplication();
 		
-		Thread.sleep(20000);
+		Thread.sleep(10000);
 		
     }
 
